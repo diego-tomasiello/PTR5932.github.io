@@ -4,12 +4,16 @@ project:
 website:
   title: "PTR5932"
   sidebar:
-    left:
-      - href: index.qmd
-        text: Home
-      - aula01.qmd
-      - referencias.qmd
-
+    style: "docked" # Options: "docked" or "floating"
+    search: true
+    contents:
+      - text: "Home"
+        href: index.qmd
+      - text: "Aula 01"
+        href: aula01.qmd
+      - text: "Referências"
+        href: referencias.qmd
+      - section: "More Info"
 format:
   html:
     theme:
