@@ -11,7 +11,7 @@ Instalar os pacotes: - [`sf`](https://cran.r-project.org/web/packages/sf/) - [`t
 
 Após instalar, em sequencia, o R e o RStudio, abra o RStudio e observe a sua interface (Figura 01).
 
-![Figura 01: Interface do RStudio](images/RStudio_v3.png){fig-align="left"}
+![Figura 01 - Interface do RStudio](RStudio_v3.png){fig-align="left"}
 
 ### Painel de Scripts
 
