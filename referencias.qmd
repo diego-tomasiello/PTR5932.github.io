@@ -1,0 +1,21 @@
+# Referências {.unnumbered}
+
+BURROUGH, P. A.; MCDONNELL, R. A. Principles of geographical information systems. New York: Oxford University Press, 1998. 334p.
+
+DE SMITH, M. J.; GOODCHILD, M. F.; LONGLEY, P. Geospatial analysis: a comprehensive guide to principles, techniques and software tools. Troubador Publishing Ltd, 2025 - 7th edition. Disponível em: http://www.spatialanalysisonline.com/HTML/index.html
+
+GEMAEL, C. Introdução à Geodésia Física. Editora da UFPR. Curitiba, 1999.
+
+HOFMANN-WELLENHOF, B.; LICHTENEGGER, H.; WASLE, E. GNSS: Global Navigation Satellite Systems – GPS, GLONASS, Galileo & more. Austria: Springer-Verlag Wien New York, 1a edição, 2008. 516p. ISBN 978-3-211-73012-6
+
+LOVELACE, R.; NOWOSAD, J.; MUENCHOW, J.Geocomputation with R. Chapman and Hall/CRC, 2025. Disponível em: https://doi.org/10.1201/9780203730058
+
+MACLACHLAN, A.; DENNETT, A. An Applied Geographic Information Systems and Science Course in R.Journal of Open Source Education, v. 5, n. 50, 2022. Disponível em: https://doi.org/10.21105/jose.00141
+
+MONICO, J. F. G. Posicionamento pelo GNSS: Descrição, fundamentos e aplicações. São Paulo, Editora UNESP, 2007. 476p. ISBN: 978-85-7139-788-0
+
+PEREIRA, R. H.; SARAIVA, M.; HERSZENHUT, D.; BRAGA, C. K. V.; CONWAY, M. W. r5r: rapid realistic routing on multimodal transport networks with r 5 in r.*Findings*, 2021. https://doi.org/10.32866/001c.21262
+
+RICHARDUS, P.; ADLER, R.K. Map Projections for Geodesists, Cartographers and Geographers. North-Holland Publishing Company, 1972.
+
+TEAM, R. Core. R language definition.Vienna, Austria: R foundation for statistical computing, v. 3, n. 1, p. 116, 2000. https://mirror.twds.com.tw/CRAN/doc/FAQ/r-release/R-lang.pdf

@@ -1,11 +1,31 @@
----
-title: "PTR5932"
----
+# Apresentação {.unnumbered}
 
-This is a Quarto website.
+Vivemos em uma era de abundância de dados sem precedentes. O avanço acelerado das tecnologias de informação e comunicação transformou a forma como registramos, analisamos e compreendemos os fenômenos ao nosso redor, gerando um volume maciço de informações que trazem consigo um elemento fundamental: a localização geográfica. No planejamento, na operação e na gestão dos sistemas de transportes e da infraestrutura urbana, essa dimensão espacial pode permitir desvendar padrões complexos da dinâmica territorial.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+No entanto, a mera disponibilidade de dados geoespaciais não garante sua utilidade. Um dos desafios na academia e no mundo corporativo é a capacidade de transformar grandes volumes de dados geoespaciais em conhecimento estruturado. É nesse cenário desafiador que se insere este livro, concebido como o material didático de apoio para a disciplina PTR-5932: Introdução à Ciência de Dados Geoespaciais, do Programa de Pós-Graduação em Engenharia de Transportes da Escola Politécnica da Universidade de São Paulo (USP).
 
-```{r}
-1 + 1
-```
+Este material foi estruturado especificamente para preencher uma lacuna: a necessidade de uma formação introdutória que forneça fundamentos teóricos e instrumentais para a organização, manipulação e representação de dados geoespaciais. Destinado a estudantes de mestrado, doutorado, pesquisadores e profissionais de áreas correlatas, o material tem como objetivo construir uma base conceitual que dê segurança e autonomia para que, em etapas posteriores de suas trajetórias, os leitores possam avançar para a construção de modelos e análises espaciais.
+
+Para atingir esse objetivo, o material apresenta laboratórios didáticos com aplicações na linguagem de programação R.
+
+## Organização do material {.unnumbered}
+
++-------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| Aula                                                                                                                                | Descrição                                                                                                         |
++=====================================================================================================================================+===================================================================================================================+
+| 1.  Introdução                                                                                                                      | Instalação do R e do RStudio. Apresentação da interface do RStudio, sintaxe da linguagem e instalação de pacotes. |
++-------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| 2.  Sistemas de Referência e Projeções Cartográficas                                                                                | Transformação entre Sistemas de Referência e Projeções Cartográficas.                                             |
++-------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| 3.  Dados espaciais: tipos, estruturas, formas de representação e formatos de armazenamento                                         | Leitura de diferentes formatos de arquivo no R                                                                    |
++-------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| 4.  Dados de entrada em SIG: Infraestruturas de Dados Espaciais, Censos, Pesquisas Origem e Destino, VGI, Geocodificação, GNSS etc. | Pacotes para leitura de diferentes formatos de dados, tratamento topológico e geocodificação de dados.            |
++-------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| 5.  Operações espaciais: buffer, clip, dissolve, intersect, union etc.                                                              | Principais operações de sobreposição e proximidade                                                                |
++-------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| 6.  Manipulação de dados raster: álgebra de mapas                                                                                   | Leitura, escrita e operações espaciais (locais, focais, zonais e globais) com dados raster                        |
++-------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| 7.  Modelagem de redes de transportes: redes em SIG e em R (r5r)                                                                    | Princípios de modelagem de redes de transporte em SIG e em R usando o pacote r5r                                  |
++-------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| 8.  Design e produção de mapas                                                                                                      | Produção de mapas utilizando o pacote cowplot                                                                     |
++-------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
