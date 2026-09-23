@@ -11,6 +11,8 @@ website:
         href: index.qmd
       - text: "Aula 01"
         href: aula01.qmd
+      - text: "Aula 02"
+        href: aula02.qmd
       - text: "Referências"
         href: referencias.qmd
 format:

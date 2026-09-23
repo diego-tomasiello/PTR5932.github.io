@@ -1,0 +1,111 @@
+# Aula 02
+
+A compatibilização do referencial e projeções cartográficas de dados geoespaciais é a base para análises espaciais subsequentes. Este laboratório didático possui como objetivo exercitar a identificação de **Sistemas de Referência de Coordenadas (CRS)** e a **transformação entre referenciais e reprojeções**.
+
+## **Sistemas de Referência de Coordenadas (CRS), transformações entre referenciais e reprojeções em R**
+
+### **Objetivos de Aprendizagem**
+
+-   Inspecionar parâmetros dos CRS (Datum, Elipsoide, Unidade e Projeção) via código [**EPSG**](https://epsg.io/)
+
+-   Identificar incompatibilidade de CRS entre diferentes fontes de dados vetoriais.
+
+-   Reprojeção com a função `st_transform()`.
+
+-   Atribuir CRS com a função `st_set_crs()`.
+
+### **Preparação do Ambiente no R**
+
+```{r}
+#| eval: false
+# Carregar as bibliotecas fundamentais 
+library(sf)
+library(dplyr)
+```
+
+### **Roteiro de Execução Passo a Passo**
+
+#### **Leitura do Dado e Inspeção do CRS Original**
+
+Baixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho através da função `setwd()`. Leia o arquivo `zonas_origem_destino.gpkg` utilizando a função `read_sf()` e inspecione o seu CRS através da função `st_crs()`: 
+
+```{r}
+#| eval: false
+
+# Configuração do diretório de trabalho
+setwd() # Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. "C:/Users/User/Downloads/PTR5932_Lab2")
+
+# Leitura da camada vetorial (GeoPackage) 
+zonas_sp <- read_sf("zonas_origem_destino.gpkg")  
+
+# Inspeção do CRS da camada 
+st_crs(zonas_sp)  
+
+# Extração direta do código EPSG e das unidades de medida planimétricas 
+epsg_original <- st_crs(zonas_sp)$epsg 
+unidade_medida <- st_crs(zonas_sp)$units_gdal  
+cat("Código EPSG detectado:", epsg_original, "\n") 
+cat("Unidade de medida das coordenadas:", unidade_medida, "\n") 
+```
+
+> **Nota:** A camada está em **WGS84 Sistema de Coordenadas Geográficas (EPSG: 4326)**, um dos sistemas de referencia mais utilizados em dados geoespaciais. O WGS84 é o sistema de referência utilizado pelo sistema de posicionamento GPS. Nos sistemas de coordenadas geográficas, as coordenadas são expressas em *graus decimais*.
+
+#### **Incompatibilidade de CRS**
+
+Carregue a segunda camada (`estacoes_metro.gpkg`) e verifique a compatibilidade entre os CRS:
+
+```{r}
+#| eval: false
+estacoes <- read_sf("estacoes_metro.gpkg")
+
+# Teste lógico de igualdade entre os sistemas de referência 
+if (st_crs(zonas_sp) != st_crs(estacoes)) {message("As camadas possuem CRS distintos e não devem ser sobrepostas sem reprojeção!") } 
+```
+
+> **Nota:** A camada está em **Córrego Alegre UTM 23S (EPSG: 22523)**, um sistema de referência geodésico local utilizado históricamente no Brasil e frequentemente encontrado em dados cartográficos mais antigos, especialmente extraídos a partir de cartas topográficas digitalizadas. O Córrego Alegre foi posteriormente substituído pelo SAD69 e, mais recentemente, pelo SIRGAS2000. Como a projeção cartográfica adotada é a Universal Transversa de Mercator (UTM), as coordenadas são expressas em *metros*.
+
+#### **Transformação Espacial (Reprojeção)**
+
+Para a Região Metropolitana de São Paulo, adotaremos o sistema de referência projetado **SIRGAS 2000 / UTM Fuso 23S (EPSG: 31983)**, que utiliza unidades métricas. Para reprojetar os dados, utilize a função `st_transform()`, informando como parâmetros a variável de entrada e o código EPSG do sistema de referência, `31983`:
+
+```{r}
+#| eval: false
+
+# Reprojeção da camada de Zonas de Tráfego para UTM 23S 
+zonas_utm <- st_transform(zonas_sp, crs = 31983)  
+
+# Reprojeção da camada de Estações 
+estacoes_utm <- st_transform(estacoes, crs = 31983) 
+
+# Confirmação do novo CRS projetado 
+st_crs(zonas_utm)$Name # Retorno esperado: "SIRGAS 2000 / UTM zone 23S" 
+```
+
+#### **Atribuição de um sistema de referência e projeção**
+
+Caso a camada de entrada não possua um sistema de referência e projeção, é possível atribuir o referencial adequado à camada, desde que essa informação seja conhecida previamente, utilizando a função `st_set_crs()`:
+
+```{r}
+#| eval: false
+# Leitura da camada de linhas do Metrô
+linhas_metro <- read_sf("linhas_metro_SIRGAS2000_UTM23S.gpkg")
+
+# Consulta do CRS da camada
+st_crs(linhas_metro) #Retorno esperado: NA
+
+# Atribuição do sistema de referência e projeção corretos (baseado no nome da camada)
+linhas_metro <- linhas_metro %>%
+  st_set_crs(31983)
+
+# Consulta do CRS da camada
+st_crs(linhas_metro)$Name #Retorno esperado: SIRGAS 2000 / UTM zone 23S
+```
+
+## Referências:
+
+https://r-spatial.github.io/sf
+
+https://cran.r-project.org/web/packages/sf/index.html
+
+https://r.geocompx.org/reproj-geo-data
+
