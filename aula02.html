@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>PTR5932 - Introdução à Ciência de Dados Geoespaciais</title>
+<title>aula02 – PTR5932 - Introdução à Ciência de Dados Geoespaciais</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -25,6 +25,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -87,7 +122,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Home</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./aula02.html">Aula 02</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -114,7 +149,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
   </div>
 </li>
@@ -126,7 +161,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./aula02.html" class="sidebar-item-text sidebar-link">
+  <a href="./aula02.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Aula 02</span></a>
   </div>
 </li>
@@ -146,9 +181,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#apresentação" id="toc-apresentação" class="nav-link active" data-scroll-target="#apresentação">Apresentação</a>
+  <li><a href="#aula-02" id="toc-aula-02" class="nav-link active" data-scroll-target="#aula-02">Aula 02</a>
   <ul class="collapse">
-  <li><a href="#organização-do-material" id="toc-organização-do-material" class="nav-link" data-scroll-target="#organização-do-material">Organização do material</a></li>
+  <li><a href="#sistemas-de-referência-de-coordenadas-crs-transformações-entre-referenciais-e-reprojeções-em-r" id="toc-sistemas-de-referência-de-coordenadas-crs-transformações-entre-referenciais-e-reprojeções-em-r" class="nav-link" data-scroll-target="#sistemas-de-referência-de-coordenadas-crs-transformações-entre-referenciais-e-reprojeções-em-r"><strong>Sistemas de Referência de Coordenadas (CRS), transformações entre referenciais e reprojeções em R</strong></a>
+  <ul class="collapse">
+  <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem"><strong>Objetivos de Aprendizagem</strong></a></li>
+  <li><a href="#preparação-do-ambiente-no-r" id="toc-preparação-do-ambiente-no-r" class="nav-link" data-scroll-target="#preparação-do-ambiente-no-r"><strong>Preparação do Ambiente no R</strong></a></li>
+  <li><a href="#roteiro-de-execução-passo-a-passo" id="toc-roteiro-de-execução-passo-a-passo" class="nav-link" data-scroll-target="#roteiro-de-execução-passo-a-passo"><strong>Roteiro de Execução Passo a Passo</strong></a></li>
+  </ul></li>
+  <li><a href="#referências" id="toc-referências" class="nav-link" data-scroll-target="#referências">Referências:</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -159,78 +200,105 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Autor: Diego Bogado Tomasiello</p>
-<p>Data: 18/09/2026</p>
-<section id="apresentação" class="level1 unnumbered">
-<h1 class="unnumbered">Apresentação</h1>
-<p>Vivemos em uma era de abundância de dados sem precedentes. O avanço acelerado das tecnologias de informação e comunicação transformou a forma como registramos, analisamos e compreendemos os fenômenos ao nosso redor, gerando um volume maciço de informações que trazem consigo um elemento fundamental: a localização geográfica. No planejamento, na operação e na gestão dos sistemas de transportes e da infraestrutura urbana, essa dimensão espacial pode permitir desvendar padrões complexos da dinâmica territorial.</p>
-<p>No entanto, a mera disponibilidade de dados geoespaciais não garante sua utilidade. Um dos desafios na academia e no mundo corporativo é a capacidade de transformar grandes volumes de dados geoespaciais em conhecimento estruturado. É nesse cenário desafiador que se insere este livro, concebido como o material didático de apoio para a disciplina PTR-5932: Introdução à Ciência de Dados Geoespaciais, do Programa de Pós-Graduação em Engenharia de Transportes da Escola Politécnica da Universidade de São Paulo (USP).</p>
-<p>Este material foi estruturado especificamente para preencher uma lacuna: a necessidade de uma formação introdutória que forneça fundamentos teóricos e instrumentais para a organização, manipulação e representação de dados geoespaciais. Destinado a estudantes de mestrado, doutorado, pesquisadores e profissionais de áreas correlatas, o material tem como objetivo construir uma base conceitual que dê segurança e autonomia para que, em etapas posteriores de suas trajetórias, os leitores possam avançar para a construção de modelos e análises espaciais.</p>
-<p>Para atingir esse objetivo, o material apresenta laboratórios didáticos com aplicações na linguagem de programação R.</p>
-<section id="organização-do-material" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="organização-do-material">Organização do material</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 53%">
-<col style="width: 46%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Aula</th>
-<th>Descrição</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><ol type="1">
-<li>Introdução</li>
-</ol></td>
-<td>Instalação do R e do RStudio. Apresentação da interface do RStudio, sintaxe da linguagem e instalação de pacotes.</td>
-</tr>
-<tr class="even">
-<td><ol start="2" type="1">
-<li>Sistemas de Referência e Projeções Cartográficas</li>
-</ol></td>
-<td>Transformação entre Sistemas de Referência e Projeções Cartográficas.</td>
-</tr>
-<tr class="odd">
-<td><ol start="3" type="1">
-<li>Dados espaciais: tipos, estruturas, formas de representação e formatos de armazenamento</li>
-</ol></td>
-<td>Leitura de diferentes formatos de arquivo no R</td>
-</tr>
-<tr class="even">
-<td><ol start="4" type="1">
-<li>Dados de entrada em SIG: Infraestruturas de Dados Espaciais, Censos, Pesquisas Origem e Destino, VGI, Geocodificação, GNSS etc.</li>
-</ol></td>
-<td>Pacotes para leitura de diferentes formatos de dados, tratamento topológico e geocodificação de dados.</td>
-</tr>
-<tr class="odd">
-<td><ol start="5" type="1">
-<li>Operações espaciais: buffer, clip, dissolve, intersect, union etc.</li>
-</ol></td>
-<td>Principais operações de sobreposição e proximidade</td>
-</tr>
-<tr class="even">
-<td><ol start="6" type="1">
-<li>Manipulação de dados raster: álgebra de mapas</li>
-</ol></td>
-<td>Leitura, escrita e operações espaciais (locais, focais, zonais e globais) com dados raster</td>
-</tr>
-<tr class="odd">
-<td><ol start="7" type="1">
-<li>Modelagem de redes de transportes: redes em SIG e em R (r5r)</li>
-</ol></td>
-<td>Princípios de modelagem de redes de transporte em SIG e em R usando o pacote r5r</td>
-</tr>
-<tr class="even">
-<td><ol start="8" type="1">
-<li>Design e produção de mapas</li>
-</ol></td>
-<td>Produção de mapas utilizando o pacote cowplot</td>
-</tr>
-</tbody>
-</table>
+<section id="aula-02" class="level1">
+<h1>Aula 02</h1>
+<p>A compatibilização do referencial e projeções cartográficas de dados geoespaciais é a base para análises espaciais subsequentes. Este laboratório didático possui como objetivo exercitar a identificação de <strong>Sistemas de Referência de Coordenadas (CRS)</strong> e a <strong>transformação entre referenciais e reprojeções</strong>.</p>
+<section id="sistemas-de-referência-de-coordenadas-crs-transformações-entre-referenciais-e-reprojeções-em-r" class="level2">
+<h2 class="anchored" data-anchor-id="sistemas-de-referência-de-coordenadas-crs-transformações-entre-referenciais-e-reprojeções-em-r"><strong>Sistemas de Referência de Coordenadas (CRS), transformações entre referenciais e reprojeções em R</strong></h2>
+<section id="objetivos-de-aprendizagem" class="level3">
+<h3 class="anchored" data-anchor-id="objetivos-de-aprendizagem"><strong>Objetivos de Aprendizagem</strong></h3>
+<ul>
+<li><p>Inspecionar parâmetros dos CRS (Datum, Elipsoide, Unidade e Projeção) via código <a href="https://epsg.io/"><strong>EPSG</strong></a></p></li>
+<li><p>Identificar incompatibilidade de CRS entre diferentes fontes de dados vetoriais.</p></li>
+<li><p>Reprojeção com a função <code>st_transform()</code>.</p></li>
+<li><p>Atribuir CRS com a função <code>st_set_crs()</code>.</p></li>
+</ul>
+</section>
+<section id="preparação-do-ambiente-no-r" class="level3">
+<h3 class="anchored" data-anchor-id="preparação-do-ambiente-no-r"><strong>Preparação do Ambiente no R</strong></h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregar as bibliotecas fundamentais </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="roteiro-de-execução-passo-a-passo" class="level3">
+<h3 class="anchored" data-anchor-id="roteiro-de-execução-passo-a-passo"><strong>Roteiro de Execução Passo a Passo</strong></h3>
+<section id="leitura-do-dado-e-inspeção-do-crs-original" class="level4">
+<h4 class="anchored" data-anchor-id="leitura-do-dado-e-inspeção-do-crs-original"><strong>Leitura do Dado e Inspeção do CRS Original</strong></h4>
+<p>Baixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho através da função <code>setwd()</code>. Leia o arquivo <code>zonas_origem_destino.gpkg</code> utilizando a função <code>read_sf()</code> e inspecione o seu CRS através da função <code>st_crs()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configuração do diretório de trabalho</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>() <span class="co"># Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. "C:/Users/User/Downloads/PTR5932_Lab2")</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Leitura da camada vetorial (GeoPackage) </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>zonas_sp <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"zonas_origem_destino.gpkg"</span>)  </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspeção do CRS da camada </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(zonas_sp)  </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Extração direta do código EPSG e das unidades de medida planimétricas </span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>epsg_original <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(zonas_sp)<span class="sc">$</span>epsg </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>unidade_medida <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(zonas_sp)<span class="sc">$</span>units_gdal  </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Código EPSG detectado:"</span>, epsg_original, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Unidade de medida das coordenadas:"</span>, unidade_medida, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Nota:</strong> A camada está em <strong>WGS84 Sistema de Coordenadas Geográficas (EPSG: 4326)</strong>, um dos sistemas de referencia mais utilizados em dados geoespaciais. O WGS84 é o sistema de referência utilizado pelo sistema de posicionamento GPS. Nos sistemas de coordenadas geográficas, as coordenadas são expressas em <em>graus decimais</em>.</p>
+</blockquote>
+</section>
+<section id="incompatibilidade-de-crs" class="level4">
+<h4 class="anchored" data-anchor-id="incompatibilidade-de-crs"><strong>Incompatibilidade de CRS</strong></h4>
+<p>Carregue a segunda camada (<code>estacoes_metro.gpkg</code>) e verifique a compatibilidade entre os CRS:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>estacoes <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"estacoes_metro.gpkg"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Teste lógico de igualdade entre os sistemas de referência </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">st_crs</span>(zonas_sp) <span class="sc">!=</span> <span class="fu">st_crs</span>(estacoes)) {<span class="fu">message</span>(<span class="st">"As camadas possuem CRS distintos e não devem ser sobrepostas sem reprojeção!"</span>) } </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Nota:</strong> A camada está em <strong>Córrego Alegre UTM 23S (EPSG: 22523)</strong>, um sistema de referência geodésico local utilizado históricamente no Brasil e frequentemente encontrado em dados cartográficos mais antigos, especialmente extraídos a partir de cartas topográficas digitalizadas. O Córrego Alegre foi posteriormente substituído pelo SAD69 e, mais recentemente, pelo SIRGAS2000. Como a projeção cartográfica adotada é a Universal Transversa de Mercator (UTM), as coordenadas são expressas em <em>metros</em>.</p>
+</blockquote>
+</section>
+<section id="transformação-espacial-reprojeção" class="level4">
+<h4 class="anchored" data-anchor-id="transformação-espacial-reprojeção"><strong>Transformação Espacial (Reprojeção)</strong></h4>
+<p>Para a Região Metropolitana de São Paulo, adotaremos o sistema de referência projetado <strong>SIRGAS 2000 / UTM Fuso 23S (EPSG: 31983)</strong>, que utiliza unidades métricas. Para reprojetar os dados, utilize a função <code>st_transform()</code>, informando como parâmetros a variável de entrada e o código EPSG do sistema de referência, <code>31983</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reprojeção da camada de Zonas de Tráfego para UTM 23S </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>zonas_utm <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(zonas_sp, <span class="at">crs =</span> <span class="dv">31983</span>)  </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Reprojeção da camada de Estações </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>estacoes_utm <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(estacoes, <span class="at">crs =</span> <span class="dv">31983</span>) </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Confirmação do novo CRS projetado </span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(zonas_utm)<span class="sc">$</span>Name <span class="co"># Retorno esperado: "SIRGAS 2000 / UTM zone 23S" </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="atribuição-de-um-sistema-de-referência-e-projeção" class="level4">
+<h4 class="anchored" data-anchor-id="atribuição-de-um-sistema-de-referência-e-projeção"><strong>Atribuição de um sistema de referência e projeção</strong></h4>
+<p>Caso a camada de entrada não possua um sistema de referência e projeção, é possível atribuir o referencial adequado à camada, desde que essa informação seja conhecida previamente, utilizando a função <code>st_set_crs()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Leitura da camada de linhas do Metrô</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>linhas_metro <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"linhas_metro_SIRGAS2000_UTM23S.gpkg"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Consulta do CRS da camada</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(linhas_metro) <span class="co">#Retorno esperado: NA</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Atribuição do sistema de referência e projeção corretos (baseado no nome da camada)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>linhas_metro <span class="ot">&lt;-</span> linhas_metro <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_crs</span>(<span class="dv">31983</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Consulta do CRS da camada</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(linhas_metro)<span class="sc">$</span>Name <span class="co">#Retorno esperado: SIRGAS 2000 / UTM zone 23S</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+</section>
+<section id="referências" class="level2">
+<h2 class="anchored" data-anchor-id="referências">Referências:</h2>
+<p>https://r-spatial.github.io/sf</p>
+<p>https://cran.r-project.org/web/packages/sf/index.html</p>
+<p>https://r.geocompx.org/reproj-geo-data</p>
 
 
 </section>
