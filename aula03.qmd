@@ -1,0 +1,114 @@
+# Aula 03
+
+Os formatos de representação vetorial e matricial são os mais utilizados para modelar a realidade. Este laboratório didático possui como objetivo exercitar a **leitura, filtragem, relacionamento, criação de novos campos e a representação de dados vetoriais e matriciais.**
+
+## **Leitura, filtragem, relacionamento, criação de novos campos e representação de dados vetoriais e matriciais**
+
+### **Objetivos de Aprendizagem**
+
+-   Exercitar a leitura e a filtragem de dados vetoriais através das funções `read_sf()` e `filter()`.
+
+-   Relacionar a tabela de atributos de um dado vetorial com um tabular através da função `left_join()`.
+
+-   Criar um novo campo com operações matemáticas de campos já existentes através da função `mutate()` e visualizar o dado vetorial através da função `mapview()`.
+
+-   Rasterizar um dado vetorial através da função `rasterize()` e visualizá-lo através da função `plot()`.
+
+-   Exportar dados vetoriais e raster, respectivamente, através das funções `write_sf()` e `writeRaster()`.
+
+### **Preparação do Ambiente no R**
+
+```{r}
+#| eval: false
+# Carregar as bibliotecas fundamentais 
+library(sf)
+library(terra)
+library(dplyr)
+library(data.table)
+library(mapview)
+```
+
+### **Roteiro de Execução Passo a Passo**
+
+#### **Leitura e filtragem da base de dados vetorial**
+
+Baixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho através da função `setwd()`. Leia o arquivo `zonas_origem_destino.gpkg` utilizando a função `read_sf()` e filtre somente as zonas OD pertencentes ao município de São Paulo (código do município == 36) através da função `filter()`:
+
+```{r}
+#| eval: false
+
+# Configure o diretório de trabalho
+setwd() # Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. "C:/Users/User/Downloads/PTR5932_Lab3")
+
+# Leia a camada vetorial (GeoPackage) e filtre somente as zonas OD do município de São Paulo 
+zonas_od <- read_sf("zonas_origem_destino.gpkg") %>%
+  filter(cd_municipio == 36)
+
+```
+
+> **Nota:** O comando `%>%` e a função `filter()` só funcionarão se a biblioteca `dplyr` tiver sido carregada.
+
+#### **Leitura do arquivo tabular e relacionamento de tabela**
+
+Leia o arquivo `tabela01.csv` através da função `fread()`. Em seguida, relacione o dado tabular com o das zonas OD através da função `left_join()`, crie um novo campo com o valor da densidade de domicilios por hectare através da função `mutate()` e visualize os resultados através da função `mapview()`:
+
+```{r}
+#| eval: false
+
+#Leia o dado tabular
+tabela01 <- fread("Tabela01.csv", encoding = "Latin-1")
+
+# Relacione a tabela preservando a classe espacial 'sf' 
+zonas_od_join <- zonas_od %>%
+  left_join(tabela01, by = c("cd_original_zona_origem_destino"="Zona"))
+
+# Crie um campo nomeado "dens_domicilios" que recebe os valores da divisão dos campos "Domicilios" e "Area_ha"
+zonas_od_join <- zonas_od_join %>%
+  mutate(dens_domicilios = Domicilios/Area_ha)
+
+# Mude o mapa base da função mapview para imagens de satélite 
+mapviewOptions(basemaps = c("Esri.WorldImagery", "OpenTopoMap", "OpenStreetMap"))
+
+# Visualize a variável de domicílios através da função mapview
+mapview(zonas_od_join, zcol = "dens_domicilios")
+```
+
+> **Nota:** Como o dado tabular possui acentos e caracteres especiais, foi adotado o parâmetro de `encoding = Latin-1` dentro da função `fread()`.
+
+#### **Rasterização da camada vetorial**
+
+Para rasterizar dados vetoriais, utilize as funções `rast()` e `rasterize()`. Em seguida, visualize o arquivo raster através da função `plot()`:
+
+```{r}
+#| eval: false
+
+# crie o arquivo raster de template
+raster_template <- rast(zonas_od_join, resolution = 0.00009)
+
+# Execute a rasterização definindo o atributo numérico de interesse 
+raster_resultado <- rasterize( x = zonas_od_join, y = raster_template, field = "dens_domicilios")
+
+# Visualize o raster gerado
+plot(raster_resultado, main = "Densidade de domicílios por hectare")
+ 
+```
+
+#### **Exporte arquivos vetoriais e raster**
+
+Exporte arquivos vetoriais e raster, respectivamente, através das funções `write_sf()` e `writeRaster()`:
+
+```{r}
+#| eval: false
+
+# Exporte o dado vetorial utilizando a função write_sf()
+write_sf(zonas_od_join, "zonas_od_join.gpkg")
+
+# Exporte o dado raster utilizando a função writeRaster()
+writeRaster(x = raster_resultado, filename = "densidade_domicilios.tif", filetype = "GTiff", overwrite = TRUE )
+```
+
+## Referências:
+
+https://r-spatial.github.io/sf
+
+<https://cran.r-project.org/web/packages/terra/refman/terra.html>
