@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>aula01 – PTR5932 - Introdução à Ciência de Dados Geoespaciais</title>
+<title>aula03 – PTR5932 - Introdução à Ciência de Dados Geoespaciais</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -122,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./aula01.html">Aula 01</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./aula03.html">Aula 03</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -155,7 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./aula01.html" class="sidebar-item-text sidebar-link active">
+  <a href="./aula01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Aula 01</span></a>
   </div>
 </li>
@@ -167,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./aula03.html" class="sidebar-item-text sidebar-link">
+  <a href="./aula03.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Aula 03</span></a>
   </div>
 </li>
@@ -187,22 +187,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#aula-01" id="toc-aula-01" class="nav-link active" data-scroll-target="#aula-01">Aula 01</a>
+  <li><a href="#aula-03" id="toc-aula-03" class="nav-link active" data-scroll-target="#aula-03">Aula 03</a>
   <ul class="collapse">
-  <li><a href="#interface-do-rstudio" id="toc-interface-do-rstudio" class="nav-link" data-scroll-target="#interface-do-rstudio">Interface do RStudio</a>
+  <li><a href="#leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais" id="toc-leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais" class="nav-link" data-scroll-target="#leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais"><strong>Leitura, filtragem, relacionamento, criação de novos campos e representação de dados vetoriais e matriciais</strong></a>
   <ul class="collapse">
-  <li><a href="#painel-de-scripts" id="toc-painel-de-scripts" class="nav-link" data-scroll-target="#painel-de-scripts">Painel de Scripts</a></li>
-  <li><a href="#painel-de-ambiente" id="toc-painel-de-ambiente" class="nav-link" data-scroll-target="#painel-de-ambiente">Painel de Ambiente</a></li>
-  <li><a href="#painel-console" id="toc-painel-console" class="nav-link" data-scroll-target="#painel-console">Painel Console</a></li>
-  <li><a href="#painel-de-saída" id="toc-painel-de-saída" class="nav-link" data-scroll-target="#painel-de-saída">Painel de Saída</a></li>
+  <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem"><strong>Objetivos de Aprendizagem</strong></a></li>
+  <li><a href="#preparação-do-ambiente-no-r" id="toc-preparação-do-ambiente-no-r" class="nav-link" data-scroll-target="#preparação-do-ambiente-no-r"><strong>Preparação do Ambiente no R</strong></a></li>
+  <li><a href="#roteiro-de-execução-passo-a-passo" id="toc-roteiro-de-execução-passo-a-passo" class="nav-link" data-scroll-target="#roteiro-de-execução-passo-a-passo"><strong>Roteiro de Execução Passo a Passo</strong></a></li>
   </ul></li>
-  <li><a href="#regras-básicas-da-sintaxe-do-r" id="toc-regras-básicas-da-sintaxe-do-r" class="nav-link" data-scroll-target="#regras-básicas-da-sintaxe-do-r">Regras básicas da sintaxe do R</a>
-  <ul class="collapse">
-  <li><a href="#como-atribuir-valores-a-variáveis" id="toc-como-atribuir-valores-a-variáveis" class="nav-link" data-scroll-target="#como-atribuir-valores-a-variáveis">Como atribuir valores a variáveis</a></li>
-  <li><a href="#sensibilidade-a-maiúsculas-e-minúsculas" id="toc-sensibilidade-a-maiúsculas-e-minúsculas" class="nav-link" data-scroll-target="#sensibilidade-a-maiúsculas-e-minúsculas">Sensibilidade a maiúsculas e minúsculas</a></li>
-  <li><a href="#como-comentar-códigos" id="toc-como-comentar-códigos" class="nav-link" data-scroll-target="#como-comentar-códigos">Como comentar códigos</a></li>
-  </ul></li>
-  <li><a href="#instalação-de-pacotes" id="toc-instalação-de-pacotes" class="nav-link" data-scroll-target="#instalação-de-pacotes">Instalação de pacotes</a></li>
   <li><a href="#referências" id="toc-referências" class="nav-link" data-scroll-target="#referências">Referências:</a></li>
   </ul></li>
   </ul>
@@ -214,103 +206,105 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="aula-01" class="level1">
-<h1>Aula 01</h1>
-<p>Pré-requisitos:</p>
+<section id="aula-03" class="level1">
+<h1>Aula 03</h1>
+<p>Os formatos de representação vetorial e matricial são os mais utilizados para modelar a realidade. Este laboratório didático possui como objetivo exercitar a <strong>leitura, filtragem, relacionamento, criação de novos campos e a representação de dados vetoriais e matriciais.</strong></p>
+<section id="leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais" class="level2">
+<h2 class="anchored" data-anchor-id="leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais"><strong>Leitura, filtragem, relacionamento, criação de novos campos e representação de dados vetoriais e matriciais</strong></h2>
+<section id="objetivos-de-aprendizagem" class="level3">
+<h3 class="anchored" data-anchor-id="objetivos-de-aprendizagem"><strong>Objetivos de Aprendizagem</strong></h3>
 <ul>
-<li>Instalar o <a href="https://cran.r-project.org">R</a></li>
-<li>Instalar o <a href="https://posit.co/downloads">RStudio</a></li>
+<li><p>Exercitar a leitura e a filtragem de dados vetoriais através das funções <code>read_sf()</code> e <code>filter()</code>.</p></li>
+<li><p>Relacionar a tabela de atributos de um dado vetorial com um tabular através da função <code>left_join()</code>.</p></li>
+<li><p>Criar um novo campo com operações matemáticas de campos já existentes através da função <code>mutate()</code> e visualizar o dado vetorial através da função <code>mapview()</code>.</p></li>
+<li><p>Rasterizar um dado vetorial através da função <code>rasterize()</code> e visualizá-lo através da função <code>plot()</code>.</p></li>
+<li><p>Exportar dados vetoriais e raster, respectivamente, através das funções <code>write_sf()</code> e <code>writeRaster()</code>.</p></li>
 </ul>
-<p>Instalar os pacotes: - <a href="https://cran.r-project.org/web/packages/sf/"><code>sf</code></a> - <a href="https://cran.r-project.org/package=terra"><code>terra</code></a> - <a href="https://cran.r-project.org/web/packages/dplyr/"><code>dplyr</code></a> - <a href="https://cran.r-project.org/web/packages/data.table/"><code>data.table</code></a> - <a href="https://cran.r-project.org/web/packages/mapview/"><code>mapview</code></a> - <a href="https://cran.r-project.org/web/packages/osmdata/"><code>osmdata</code></a> - <a href="https://cran.r-project.org/web/packages/geobr/"><code>geobr</code></a> - <a href="https://cran.r-project.org/web/packages/geocodebr/"><code>geocodebr</code></a></p>
-<section id="interface-do-rstudio" class="level2">
-<h2 class="anchored" data-anchor-id="interface-do-rstudio">Interface do RStudio</h2>
-<p>Após instalar, em sequencia, o R e o RStudio, abra o RStudio e observe a sua interface (Figura 01).</p>
-<div class="quarto-figure quarto-figure-left">
-<figure class="figure">
-<p><img src="RStudio_v3.png" class="img-fluid figure-img"></p>
-<figcaption>Figura 01 - Interface do RStudio</figcaption>
-</figure>
-</div>
-<section id="painel-de-scripts" class="level3">
-<h3 class="anchored" data-anchor-id="painel-de-scripts">Painel de Scripts</h3>
-<p>Painel onde você pode editar e salvar scripts em R ou criar documentos computacionais, como Quarto e R Markdown.</p>
 </section>
-<section id="painel-de-ambiente" class="level3">
-<h3 class="anchored" data-anchor-id="painel-de-ambiente">Painel de Ambiente</h3>
-<p>Painel que exibe os objetos temporários em R à medida que são criados durante a sessão do R.</p>
-</section>
-<section id="painel-console" class="level3">
-<h3 class="anchored" data-anchor-id="painel-console">Painel Console</h3>
-<p>Painel utilizado para escrever comandos curtos e interativos em R.</p>
-</section>
-<section id="painel-de-saída" class="level3">
-<h3 class="anchored" data-anchor-id="painel-de-saída">Painel de Saída</h3>
-<p>Painel que exibe os gráficos, tabelas ou resultados em HTML gerados pelo código executado, juntamente com os arquivos salvos em disco.</p>
-</section>
-</section>
-<section id="regras-básicas-da-sintaxe-do-r" class="level2">
-<h2 class="anchored" data-anchor-id="regras-básicas-da-sintaxe-do-r">Regras básicas da sintaxe do R</h2>
-<p>A seguir são apresentadas as regras básicas da sintaxe da linguagem R</p>
-<section id="como-atribuir-valores-a-variáveis" class="level3">
-<h3 class="anchored" data-anchor-id="como-atribuir-valores-a-variáveis">Como atribuir valores a variáveis</h3>
-<p>A atribuição de um valor a uma variável é feita através dos operadores <code>&lt;-</code> ou <code>=</code>:</p>
+<section id="preparação-do-ambiente-no-r" class="level3">
+<h3 class="anchored" data-anchor-id="preparação-do-ambiente-no-r"><strong>Preparação do Ambiente no R</strong></h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregar as bibliotecas fundamentais </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="sensibilidade-a-maiúsculas-e-minúsculas" class="level3">
-<h3 class="anchored" data-anchor-id="sensibilidade-a-maiúsculas-e-minúsculas">Sensibilidade a maiúsculas e minúsculas</h3>
-<p>O R diferencia atributos e nomes de variáveis em letras maiúsculas e minúsculas:</p>
+<section id="roteiro-de-execução-passo-a-passo" class="level3">
+<h3 class="anchored" data-anchor-id="roteiro-de-execução-passo-a-passo"><strong>Roteiro de Execução Passo a Passo</strong></h3>
+<section id="leitura-e-filtragem-da-base-de-dados-vetorial" class="level4">
+<h4 class="anchored" data-anchor-id="leitura-e-filtragem-da-base-de-dados-vetorial"><strong>Leitura e filtragem da base de dados vetorial</strong></h4>
+<p>Baixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho através da função <code>setwd()</code>. Leia o arquivo <code>zonas_origem_destino.gpkg</code> utilizando a função <code>read_sf()</code> e filtre somente as zonas OD pertencentes ao município de São Paulo (código do município == 36) através da função <code>filter()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Altura <span class="ot">&lt;-</span> <span class="dv">170</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>altura <span class="ot">&lt;-</span> <span class="dv">180</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure o diretório de trabalho</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>() <span class="co"># Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. "C:/Users/User/Downloads/PTR5932_Lab3")</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Altura)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 170</code></pre>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Leia a camada vetorial (GeoPackage) e filtre somente as zonas OD do município de São Paulo </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>zonas_od <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"zonas_origem_destino.gpkg"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cd_municipio <span class="sc">==</span> <span class="dv">36</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(altura)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 180</code></pre>
+<blockquote class="blockquote">
+<p><strong>Nota:</strong> O comando <code>%&gt;%</code> e a função <code>filter()</code> só funcionarão se a biblioteca <code>dplyr</code> tiver sido carregada.</p>
+</blockquote>
+</section>
+<section id="leitura-do-arquivo-tabular-e-relacionamento-de-tabela" class="level4">
+<h4 class="anchored" data-anchor-id="leitura-do-arquivo-tabular-e-relacionamento-de-tabela"><strong>Leitura do arquivo tabular e relacionamento de tabela</strong></h4>
+<p>Leia o arquivo <code>tabela01.csv</code> através da função <code>fread()</code>. Em seguida, relacione o dado tabular com o das zonas OD através da função <code>left_join()</code>, crie um novo campo com o valor da densidade de domicilios por hectare através da função <code>mutate()</code> e visualize os resultados através da função <code>mapview()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Leia o dado tabular</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tabela01 <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"Tabela01.csv"</span>, <span class="at">encoding =</span> <span class="st">"Latin-1"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Relacione a tabela preservando a classe espacial 'sf' </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>zonas_od_join <span class="ot">&lt;-</span> zonas_od <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(tabela01, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"cd_original_zona_origem_destino"</span><span class="ot">=</span><span class="st">"Zona"</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Crie um campo nomeado "dens_domicilios" que recebe os valores da divisão dos campos "Domicilios" e "Area_ha"</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>zonas_od_join <span class="ot">&lt;-</span> zonas_od_join <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dens_domicilios =</span> Domicilios<span class="sc">/</span>Area_ha)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Mude o mapa base da função mapview para imagens de satélite </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mapviewOptions</span>(<span class="at">basemaps =</span> <span class="fu">c</span>(<span class="st">"Esri.WorldImagery"</span>, <span class="st">"OpenTopoMap"</span>, <span class="st">"OpenStreetMap"</span>))</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize a variável de domicílios através da função mapview</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">mapview</span>(zonas_od_join, <span class="at">zcol =</span> <span class="st">"dens_domicilios"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="st">"SP"</span> <span class="sc">==</span> <span class="st">"sp"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] FALSE</code></pre>
-</div>
+<blockquote class="blockquote">
+<p><strong>Nota:</strong> Como o dado tabular possui acentos e caracteres especiais, foi adotado o parâmetro de <code>encoding = Latin-1</code> dentro da função <code>fread()</code>.</p>
+</blockquote>
+</section>
+<section id="rasterização-da-camada-vetorial" class="level4">
+<h4 class="anchored" data-anchor-id="rasterização-da-camada-vetorial"><strong>Rasterização da camada vetorial</strong></h4>
+<p>Para rasterizar dados vetoriais, utilize as funções <code>rast()</code> e <code>rasterize()</code>. Em seguida, visualize o arquivo raster através da função <code>plot()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># crie o arquivo raster de template</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>raster_template <span class="ot">&lt;-</span> <span class="fu">rast</span>(zonas_od_join, <span class="at">resolution =</span> <span class="fl">0.00009</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Execute a rasterização definindo o atributo numérico de interesse </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>raster_resultado <span class="ot">&lt;-</span> <span class="fu">rasterize</span>( <span class="at">x =</span> zonas_od_join, <span class="at">y =</span> raster_template, <span class="at">field =</span> <span class="st">"dens_domicilios"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize o raster gerado</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(raster_resultado, <span class="at">main =</span> <span class="st">"Densidade de domicílios por hectare"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="como-comentar-códigos" class="level3">
-<h3 class="anchored" data-anchor-id="como-comentar-códigos">Como comentar códigos</h3>
-<p>Os comentários servem como anotações para organizar o código e torná-lo mais fácil de compreender e replicar. Para inserir um comentário, utilize o operador <code>#</code>. Esse operador pode ser utilizado como cabeçalho para descrever blocos de código, no início de uma linha para evitar que o código seja executado ou ao final de uma linha de código. Para comentar um bloco inteiro de código, selecione as linhas desejadas e pressione <code>Crtl</code> + <code>Shift</code> + <code>C</code>:</p>
+<section id="exporte-arquivos-vetoriais-e-raster" class="level4">
+<h4 class="anchored" data-anchor-id="exporte-arquivos-vetoriais-e-raster"><strong>Exporte arquivos vetoriais e raster</strong></h4>
+<p>Exporte arquivos vetoriais e raster, respectivamente, através das funções <code>write_sf()</code> e <code>writeRaster()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vamos agora atribuir o valor 170 para a variável Altura</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Altura <span class="ot">&lt;-</span> <span class="dv">170</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>altura <span class="ot">&lt;-</span> <span class="dv">180</span> <span class="co"># Agora atribuímos o valor 180 para a variável altura</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># print(altura) # dessa forma evitamos a impressão do valor da variável.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exporte o dado vetorial utilizando a função write_sf()</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_sf</span>(zonas_od_join, <span class="st">"zonas_od_join.gpkg"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Exporte o dado raster utilizando a função writeRaster()</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">writeRaster</span>(<span class="at">x =</span> raster_resultado, <span class="at">filename =</span> <span class="st">"densidade_domicilios.tif"</span>, <span class="at">filetype =</span> <span class="st">"GTiff"</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
-<section id="instalação-de-pacotes" class="level2">
-<h2 class="anchored" data-anchor-id="instalação-de-pacotes">Instalação de pacotes</h2>
-<p>Para instalar pacotes no RStudio, é utilizada a função <code>install.packages()</code> no console do RStudio:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Para instalar diversos pacotes de uma única vez, digite no console do RStudio a função <code>install.packages ()</code> utilizando como argumento os pacotes <code>sf</code>, <code>terra</code>, <code>dplyr</code>, <code>data.table</code>, <code>mapview</code>, <code>osmdata</code>, <code>geobr</code> e <code>geocodebr</code>, que são alguns dos pacotes que serão utilizados ao longo da disciplina:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"sf"</span>, <span class="st">"terra"</span>, <span class="st">"dplyr"</span>, <span class="st">"data.table"</span>, <span class="st">"mapview"</span>, <span class="st">"osmdata"</span>, <span class="st">"geobr"</span>, <span class="st">"geocodebr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Após instalar os pacotes, carregue-os na sessão atual através da função <code>library()</code>:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 </section>
 <section id="referências" class="level2">
 <h2 class="anchored" data-anchor-id="referências">Referências:</h2>
-<p>https://docs.posit.co/ide/user/</p>
+<p>https://r-spatial.github.io/sf</p>
+<p><a href="https://cran.r-project.org/web/packages/terra/refman/terra.html" class="uri">https://cran.r-project.org/web/packages/terra/refman/terra.html</a></p>
 
 
 </section>

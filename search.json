@@ -17,23 +17,33 @@
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Apresentação",
+    "objectID": "aula03.html",
+    "href": "aula03.html",
+    "title": "Aula 03",
     "section": "",
-    "text": "Autor: Diego Bogado Tomasiello\nData: 18/09/2026",
+    "text": "Os formatos de representação vetorial e matricial são os mais utilizados para modelar a realidade. Este laboratório didático possui como objetivo exercitar a leitura, filtragem, relacionamento, criação de novos campos e a representação de dados vetoriais e matriciais.\n\n\n\n\n\nExercitar a leitura e a filtragem de dados vetoriais através das funções read_sf() e filter().\nRelacionar a tabela de atributos de um dado vetorial com um tabular através da função left_join().\nCriar um novo campo com operações matemáticas de campos já existentes através da função mutate() e visualizar o dado vetorial através da função mapview().\nRasterizar um dado vetorial através da função rasterize() e visualizá-lo através da função plot().\nExportar dados vetoriais e raster, respectivamente, através das funções write_sf() e writeRaster().\n\n\n\n\n\n# Carregar as bibliotecas fundamentais \nlibrary(sf)\nlibrary(terra)\nlibrary(dplyr)\nlibrary(data.table)\nlibrary(mapview)\n\n\n\n\n\n\nBaixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho através da função setwd(). Leia o arquivo zonas_origem_destino.gpkg utilizando a função read_sf() e filtre somente as zonas OD pertencentes ao município de São Paulo (código do município == 36) através da função filter():\n\n# Configure o diretório de trabalho\nsetwd() # Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. \"C:/Users/User/Downloads/PTR5932_Lab3\")\n\n# Leia a camada vetorial (GeoPackage) e filtre somente as zonas OD do município de São Paulo \nzonas_od &lt;- read_sf(\"zonas_origem_destino.gpkg\") %&gt;%\n  filter(cd_municipio == 36)\n\n\nNota: O comando %&gt;% e a função filter() só funcionarão se a biblioteca dplyr tiver sido carregada.\n\n\n\n\nLeia o arquivo tabela01.csv através da função fread(). Em seguida, relacione o dado tabular com o das zonas OD através da função left_join(), crie um novo campo com o valor da densidade de domicilios por hectare através da função mutate() e visualize os resultados através da função mapview():\n\n#Leia o dado tabular\ntabela01 &lt;- fread(\"Tabela01.csv\", encoding = \"Latin-1\")\n\n# Relacione a tabela preservando a classe espacial 'sf' \nzonas_od_join &lt;- zonas_od %&gt;%\n  left_join(tabela01, by = c(\"cd_original_zona_origem_destino\"=\"Zona\"))\n\n# Crie um campo nomeado \"dens_domicilios\" que recebe os valores da divisão dos campos \"Domicilios\" e \"Area_ha\"\nzonas_od_join &lt;- zonas_od_join %&gt;%\n  mutate(dens_domicilios = Domicilios/Area_ha)\n\n# Mude o mapa base da função mapview para imagens de satélite \nmapviewOptions(basemaps = c(\"Esri.WorldImagery\", \"OpenTopoMap\", \"OpenStreetMap\"))\n\n# Visualize a variável de domicílios através da função mapview\nmapview(zonas_od_join, zcol = \"dens_domicilios\")\n\n\nNota: Como o dado tabular possui acentos e caracteres especiais, foi adotado o parâmetro de encoding = Latin-1 dentro da função fread().\n\n\n\n\nPara rasterizar dados vetoriais, utilize as funções rast() e rasterize(). Em seguida, visualize o arquivo raster através da função plot():\n\n# crie o arquivo raster de template\nraster_template &lt;- rast(zonas_od_join, resolution = 0.00009)\n\n# Execute a rasterização definindo o atributo numérico de interesse \nraster_resultado &lt;- rasterize( x = zonas_od_join, y = raster_template, field = \"dens_domicilios\")\n\n# Visualize o raster gerado\nplot(raster_resultado, main = \"Densidade de domicílios por hectare\")\n\n\n\n\nExporte arquivos vetoriais e raster, respectivamente, através das funções write_sf() e writeRaster():\n\n# Exporte o dado vetorial utilizando a função write_sf()\nwrite_sf(zonas_od_join, \"zonas_od_join.gpkg\")\n\n# Exporte o dado raster utilizando a função writeRaster()\nwriteRaster(x = raster_resultado, filename = \"densidade_domicilios.tif\", filetype = \"GTiff\", overwrite = TRUE )\n\n\n\n\n\n\nhttps://r-spatial.github.io/sf\nhttps://cran.r-project.org/web/packages/terra/refman/terra.html",
     "crumbs": [
-      "Home"
+      "Aula 03"
     ]
   },
   {
-    "objectID": "index.html#organização-do-material",
-    "href": "index.html#organização-do-material",
-    "title": "Apresentação",
-    "section": "Organização do material",
-    "text": "Organização do material\n\n\n\n\n\n\n\nAula\nDescrição\n\n\n\n\n\nIntrodução\n\nInstalação do R e do RStudio. Apresentação da interface do RStudio, sintaxe da linguagem e instalação de pacotes.\n\n\n\nSistemas de Referência e Projeções Cartográficas\n\nTransformação entre Sistemas de Referência e Projeções Cartográficas.\n\n\n\nDados espaciais: tipos, estruturas, formas de representação e formatos de armazenamento\n\nLeitura de diferentes formatos de arquivo no R\n\n\n\nDados de entrada em SIG: Infraestruturas de Dados Espaciais, Censos, Pesquisas Origem e Destino, VGI, Geocodificação, GNSS etc.\n\nPacotes para leitura de diferentes formatos de dados, tratamento topológico e geocodificação de dados.\n\n\n\nOperações espaciais: buffer, clip, dissolve, intersect, union etc.\n\nPrincipais operações de sobreposição e proximidade\n\n\n\nManipulação de dados raster: álgebra de mapas\n\nLeitura, escrita e operações espaciais (locais, focais, zonais e globais) com dados raster\n\n\n\nModelagem de redes de transportes: redes em SIG e em R (r5r)\n\nPrincípios de modelagem de redes de transporte em SIG e em R usando o pacote r5r\n\n\n\nDesign e produção de mapas\n\nProdução de mapas utilizando o pacote cowplot",
+    "objectID": "aula03.html#leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais",
+    "href": "aula03.html#leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais",
+    "title": "Aula 03",
+    "section": "",
+    "text": "Exercitar a leitura e a filtragem de dados vetoriais através das funções read_sf() e filter().\nRelacionar a tabela de atributos de um dado vetorial com um tabular através da função left_join().\nCriar um novo campo com operações matemáticas de campos já existentes através da função mutate() e visualizar o dado vetorial através da função mapview().\nRasterizar um dado vetorial através da função rasterize() e visualizá-lo através da função plot().\nExportar dados vetoriais e raster, respectivamente, através das funções write_sf() e writeRaster().\n\n\n\n\n\n# Carregar as bibliotecas fundamentais \nlibrary(sf)\nlibrary(terra)\nlibrary(dplyr)\nlibrary(data.table)\nlibrary(mapview)\n\n\n\n\n\n\nBaixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho através da função setwd(). Leia o arquivo zonas_origem_destino.gpkg utilizando a função read_sf() e filtre somente as zonas OD pertencentes ao município de São Paulo (código do município == 36) através da função filter():\n\n# Configure o diretório de trabalho\nsetwd() # Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. \"C:/Users/User/Downloads/PTR5932_Lab3\")\n\n# Leia a camada vetorial (GeoPackage) e filtre somente as zonas OD do município de São Paulo \nzonas_od &lt;- read_sf(\"zonas_origem_destino.gpkg\") %&gt;%\n  filter(cd_municipio == 36)\n\n\nNota: O comando %&gt;% e a função filter() só funcionarão se a biblioteca dplyr tiver sido carregada.\n\n\n\n\nLeia o arquivo tabela01.csv através da função fread(). Em seguida, relacione o dado tabular com o das zonas OD através da função left_join(), crie um novo campo com o valor da densidade de domicilios por hectare através da função mutate() e visualize os resultados através da função mapview():\n\n#Leia o dado tabular\ntabela01 &lt;- fread(\"Tabela01.csv\", encoding = \"Latin-1\")\n\n# Relacione a tabela preservando a classe espacial 'sf' \nzonas_od_join &lt;- zonas_od %&gt;%\n  left_join(tabela01, by = c(\"cd_original_zona_origem_destino\"=\"Zona\"))\n\n# Crie um campo nomeado \"dens_domicilios\" que recebe os valores da divisão dos campos \"Domicilios\" e \"Area_ha\"\nzonas_od_join &lt;- zonas_od_join %&gt;%\n  mutate(dens_domicilios = Domicilios/Area_ha)\n\n# Mude o mapa base da função mapview para imagens de satélite \nmapviewOptions(basemaps = c(\"Esri.WorldImagery\", \"OpenTopoMap\", \"OpenStreetMap\"))\n\n# Visualize a variável de domicílios através da função mapview\nmapview(zonas_od_join, zcol = \"dens_domicilios\")\n\n\nNota: Como o dado tabular possui acentos e caracteres especiais, foi adotado o parâmetro de encoding = Latin-1 dentro da função fread().\n\n\n\n\nPara rasterizar dados vetoriais, utilize as funções rast() e rasterize(). Em seguida, visualize o arquivo raster através da função plot():\n\n# crie o arquivo raster de template\nraster_template &lt;- rast(zonas_od_join, resolution = 0.00009)\n\n# Execute a rasterização definindo o atributo numérico de interesse \nraster_resultado &lt;- rasterize( x = zonas_od_join, y = raster_template, field = \"dens_domicilios\")\n\n# Visualize o raster gerado\nplot(raster_resultado, main = \"Densidade de domicílios por hectare\")\n\n\n\n\nExporte arquivos vetoriais e raster, respectivamente, através das funções write_sf() e writeRaster():\n\n# Exporte o dado vetorial utilizando a função write_sf()\nwrite_sf(zonas_od_join, \"zonas_od_join.gpkg\")\n\n# Exporte o dado raster utilizando a função writeRaster()\nwriteRaster(x = raster_resultado, filename = \"densidade_domicilios.tif\", filetype = \"GTiff\", overwrite = TRUE )",
     "crumbs": [
-      "Home"
+      "Aula 03"
+    ]
+  },
+  {
+    "objectID": "aula03.html#referências",
+    "href": "aula03.html#referências",
+    "title": "Aula 03",
+    "section": "",
+    "text": "https://r-spatial.github.io/sf\nhttps://cran.r-project.org/web/packages/terra/refman/terra.html",
+    "crumbs": [
+      "Aula 03"
     ]
   },
   {
@@ -63,6 +73,26 @@
     "title": "Aula 01",
     "section": "",
     "text": "https://docs.posit.co/ide/user/"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Apresentação",
+    "section": "",
+    "text": "Autor: Diego Bogado Tomasiello\nData: 18/09/2026",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#organização-do-material",
+    "href": "index.html#organização-do-material",
+    "title": "Apresentação",
+    "section": "Organização do material",
+    "text": "Organização do material\n\n\n\n\n\n\n\nAula\nDescrição\n\n\n\n\n\nIntrodução\n\nInstalação do R e do RStudio. Apresentação da interface do RStudio, sintaxe da linguagem e instalação de pacotes.\n\n\n\nSistemas de Referência e Projeções Cartográficas\n\nTransformação entre Sistemas de Referência e Projeções Cartográficas.\n\n\n\nDados espaciais: tipos, estruturas, formas de representação e formatos de armazenamento\n\nLeitura de diferentes formatos de arquivo no R\n\n\n\nDados de entrada em SIG: Infraestruturas de Dados Espaciais, Censos, Pesquisas Origem e Destino, VGI, Geocodificação, GNSS etc.\n\nPacotes para leitura de diferentes formatos de dados, tratamento topológico e geocodificação de dados.\n\n\n\nOperações espaciais: buffer, clip, dissolve, intersect, union etc.\n\nPrincipais operações de sobreposição e proximidade\n\n\n\nManipulação de dados raster: álgebra de mapas\n\nLeitura, escrita e operações espaciais (locais, focais, zonais e globais) com dados raster\n\n\n\nModelagem de redes de transportes: redes em SIG e em R (r5r)\n\nPrincípios de modelagem de redes de transporte em SIG e em R usando o pacote r5r\n\n\n\nDesign e produção de mapas\n\nProdução de mapas utilizando o pacote cowplot",
+    "crumbs": [
+      "Home"
+    ]
   },
   {
     "objectID": "aula01.html",
