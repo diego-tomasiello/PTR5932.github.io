@@ -84,7 +84,7 @@ Para instalar diversos pacotes de uma única vez, digite no console do RStudio a
 
 ```{r}
 #| eval: false
-install.packages("sf", "terra", "dplyr", "data.table", "mapview", "osmdata", "geobr", "geocodebr")
+install.packages(c("sf", "terra", "dplyr", "data.table", "mapview", "osmdata", "geobr", "geocodebr"))
 ```
 
 Após instalar os pacotes, carregue-os na sessão atual através da função `library()`:
