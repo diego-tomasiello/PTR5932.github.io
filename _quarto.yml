@@ -13,7 +13,7 @@ book:
     - aula04.qmd
     - referencias.qmd
 
-bibliography: references.bib
+#bibliography: references.bib
 
 format:
   html:
