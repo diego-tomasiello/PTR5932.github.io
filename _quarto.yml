@@ -1,29 +1,27 @@
 project:
-  type: website
+  type: book
 
-website:
+book:
   title: "PTR5932 - Introdução à Ciência de Dados Geoespaciais"
-  sidebar:
-    style: "docked" # Options: "docked" or "floating"
-    search: true
-    contents:
-      - text: "Home"
-        href: index.qmd
-      - text: "Aula 01"
-        href: aula01.qmd
-      - text: "Aula 02"
-        href: aula02.qmd
-      - text: "Aula 03"
-        href: aula03.qmd
-      - text: "Referências"
-        href: referencias.qmd
+  author: "Diego Bogado Tomasiello"
+  date: "09/18/2026"
+  chapters:
+    - index.qmd
+    - aula01.qmd
+    - aula02.qmd
+    - aula03.qmd
+    - aula04.qmd
+    - referencias.qmd
+
+bibliography: references.bib
+
 format:
   html:
     theme:
       - cosmo
       - brand
-    css: styles.css
-    toc: true
+  pdf:
+    documentclass: scrreprt
 
-
+editor: visual
 

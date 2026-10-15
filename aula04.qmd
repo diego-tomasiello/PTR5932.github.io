@@ -1,0 +1,299 @@
+# Aula 04
+
+A etapa de entrada de dados é fundamental para qualquer projeto em Ciência de Dados Geoespaciais. A presente aula aborda como importar algumas das principais fontes de dados espaciais. O conteúdo abrange análise de topologia e o acesso a bases de dados como a **Infraestrutura Nacional de Dados Espaciais (INDE)**, dados de **Censos**, **Geocodificação**, **OpenStreetMap**, **Rastreamento** e **LiDAR**.
+
+## **Acesso e leitura de dados da INDE, Censos, OpenStreetMap, Geocodificação, Rastreamento e LiDAR**
+
+### **Objetivos de Aprendizagem**
+
+-   Identificar e corrigir erros topológicos.
+
+-   Acessar dados da Infraestrutura Nacional de Dados Espaciais (INDE).
+
+-   Acessar dados do Censo através dos pacotes `censobr` e `geobr`.
+
+-   Geocodificar uma lista de endereços através do pacote `geocodebr`.
+
+-   Acessar dados do OpenStreetMap através do pacote `osmdata`.
+
+-   Ler e tratar dados de rastreamento.
+
+-   Ler e tratar dados LiDAR através dos pacotes `lidR` e `terra`
+
+### **Preparação do Ambiente no R**
+
+```{r}
+#| eval: false
+# Carregar as bibliotecas fundamentais 
+library(sf)          # Manipulação de dados vetoriais (Simple Features)
+library(tidyverse)   # Manipulação e visualização de dados (dplyr, ggplot2)
+library(geobr)       # Malhas territoriais oficiais do IBGE
+library(censobr)     # Microdados e agregados censitários do IBGE
+library(geocodebr)   # Geocodificação local com base no CNEFE/IBGE
+library(lwgeom)      # funções para análise topológica
+library(osmdata)     # Consulta a dados VGI (OpenStreetMap via Overpass API)
+library(mapview)     # Cartografia temática interativa
+library(rstudioapi)  # Apontar o diretório de trabalho
+library(data.table)  # Leitura de dados tabulares
+library(lidR)        # Leitura de dados LiDAR (LAS/LAZ)
+library(terra)       # Leitura, tratamento e exportação de dados raster
+library(rgl)         # Renderização e visualização 3D
+
+#Caso não tenha instalado algum dos pacotes anteriores, execute: 
+#install.packages("nome do pacote")
+
+# Configure o diretório de trabalho
+path <- selectDirectory(caption = "Select Working Directory") # rode esta linha para apontar o diretório de trabalho
+
+setwd(path)
+mapviewOptions(basemaps = c("Esri.WorldImagery", "OpenTopoMap", "OpenStreetMap"))
+
+```
+
+> **Nota:** O comando `selectDirectory()` abre uma interface para que o usuário indique o diretório de trabalho.
+
+### **Roteiro de Execução Passo a Passo**
+
+#### **Análise topológica das Zonas OD 2023 de São Paulo**
+
+Quando trabalhamos com dados geoespaciais vetoriais, é essencial verificarmos a sua consistência topológica. Inconsistências topológicas, como auto-intersecções (*self-intersections*), sobreposições indevidas (*overlaps*) e lacunas não planejadas (*gaps*) entre polígonos adjacentes, podem comprometer a precisão de análises territoriais, distorcer cálculos de área e provocar falhas na execução de operações espaciais. O script abaixo utiliza os pacotes `sf` e `lwgeom`, para identificar e corrigir automaticamente falhas topológicas em camadas vetoriais de polígonos:
+
+```{r}
+#| eval: false  
+
+# Ler arquivo shapefile das Zonas OD 2023 disponibilizado pelo Metrô 
+zonas_od <- read_sf("Zonas_2023.shp", options = "ENCODING=LATIN1") 
+
+# Verificar se existem geometrias inválidas 
+zonas_od$valido <- st_is_valid(zonas_od) 
+
+# Contar de geometrias válidas e inválidas 
+table(zonas_od$valido) 
+
+# Identificar o motivo exato de cada invalidade 
+zonas_od$motivo_erro <- st_is_valid(zonas_od, reason = TRUE) 
+
+# Listar os tipos de erros encontrados no dataset e armazená-los em uma variável. Inspecionar os erros após rodar a linha abaixo
+erros <- zonas_od %>% 
+  filter(!valido) %>% 
+  st_drop_geometry() %>% 
+  count(motivo_erro, sort = TRUE)
+
+# Aplicar a correção automáticamente
+zonas_od_corrigidas <- st_make_valid(zonas_od)
+
+# Verificar se ainda são encotradas geometrias inválidas 
+zonas_od_corrigidas$valido <- st_is_valid(zonas_od_corrigidas) 
+
+# Contar geometrias válidas e inválidas 
+table(zonas_od_corrigidas$valido) 
+
+# Visualizar as Zonas OD de 2023
+mapview(zonas_od_corrigidas) 
+```
+
+> **Nota:** Os erros mais comuns, do tipo "Self-intersection", ocorrem quando a linha de contorno da zona cruza consigo mesma formando um laço.
+
+#### **Acesso a Infraestrutura Nacional de Dados Espaciais (INDE)**
+
+A INDE concentra o acesso a diversas bases de dados oficiais de orgãos do governo. No exemplo abaixo, acessaremos o serviço de WFS (Web Feature Service), por onde são disponibilizados dados vetoriais. Para isso, indique a URL do serviço WFS, liste as camadas existentes e faça a leitura da camada de arruamento utilizando a função `st_read()`. Em seguida, inspecione o sistema de referência e a projeção cartográfica da base de dados de arruamento e, caso seja necessário, faça os devidos ajustes. Por fim, visualize a base de dados através da função `mapview()`, diferenciando o arruamento de acordo com seu revestimento:
+
+```{r}
+#| eval: false
+
+# Consumo de uma camada WFS (Web Feature Service) da INDE
+url_wfs <- sprintf("https://geoservicos.inde.gov.br/geoserver/wfs") # Exemplo conceitual de endpoint WFS
+
+#info_camadas <- st_layers(paste0("WFS:", url_wfs)) # Lista as camadas do WFS, porém para a INDE fica muito demorado, pois são muitas camadas. 
+
+# Leitura direta de camada espacial vetorial via protocolo OGC WFS sem download manual
+# sf permite conexão direta com URLs WFS/GeoJSON da INDE
+IDE_camada <- st_read(dsn = paste0(url_wfs, "?service=WFS&version=1.0.0&request=GetFeature&typeName=INEA:gln_arruamento_25_armacao_dos_buzios"))
+
+# Inspeção do Sistema de Referência de Coordenadas (CRS / SIRGAS 2000 - EPSG:4674)
+st_crs(IDE_camada)
+
+IDE_camada <- st_set_crs(IDE_camada, 4674)
+st_crs(IDE_camada)
+
+mapviewOptions(basemaps = c("Esri.WorldImagery", "OpenTopoMap", "OpenStreetMap"))
+
+mapview::mapview(IDE_camada, zcol = "revestimen")
+
+```
+
+> **Nota:** Foi atribuído o EPSG 4674, pois todos os dados disponibilizados através da INDE estão no referencial SIRGAS2000 e em Sistemas de Coordenadas Geográficas.
+
+#### **Acesso a dados do Censo Demográfico**
+
+Serão utilizados os pacotes `geobr` e `censobr` para baixar, respectivamente, os dados espaciais e os dados tabulares dos setores censitários. Em seguida, os dados são relacionados através da função `left_join()` e visualizados através da função `mapview()`:
+
+```{r}
+#| eval: false
+
+# Download da malha de setores censitários de um município (ex: Armação de Búzios/RJ) via geobr
+setores_ab <- read_census_tract(year = 2022, code_tract = 3300233)
+st_crs(setores_ab)
+
+# Leitura dos dados do Censo 2022 agregados por Setor Censitário via censobr
+dados_setores <- read_tracts(year = 2022, dataset = "Basico") %>%
+  filter(code_muni == 3300233) %>% # filtra apenas o município de Armação de Búzios/RJ
+  collect() # Traz para a memória o resultado filtrado
+
+data_dictionary(year = 2022, dataset = "tracts") # dicionario de dados para verificar os nomes das variaveis e sua descrição
+
+dados_setores <- dados_setores %>%
+  select(code_tract, V0001) # seleciona apenas as variaveis de código do setor (code_tract) e População total (V001)
+
+setores_ab_join <- setores_ab %>%
+  left_join(dados_setores, by="code_tract") #join do dado espacial de setores censitários com o dado de população
+
+# Visualizacao dos dados de população por setor censitário de 2022
+mapview(setores_ab_join, zcol = "V0001")
+```
+
+> **Nota:** Na função `read_tracts()` foi selecionado o dataset "Basico". No entanto, existem ainda os datasets "Pessoas", "Domicilios", "Obitos", "Indigenas", "Quilombolas", "ResponsavelRenda" e "Entorno", ou seja, existem muitos outros dados a serem explorados.
+
+#### **Geocodificação**
+
+A geocodificação consiste em transformar um endereço (ou lista de endereços) em um par (ou vários pares) de coordenadas. A geocodificação pode ser realizada gratuitamente através do pacote `geocodebr`:
+
+```{r}
+#| eval: false
+
+# Leitura da lista de endereços para geocodificação
+enderecos <- fread("RMSPEstb_2014_10000reg.csv")
+  
+# Mapeamento dos campos com definir_campos()
+campos <- definir_campos(
+  logradouro = "nomelogradouro",
+  numero = "numero",
+  municipio = "municipio",
+  estado = "uf")
+
+# 3. Execução da geocodificação via geocodebr
+resultados_geocod <- geocode(
+  enderecos = enderecos,
+  campos_endereco = campos
+)
+
+# O resultado retorna com níveis de precisão da geocodificação, longitude e latitude 
+head(resultados_geocod)
+
+# Espacialização dos resultados
+resultados_geocod_sf <- st_as_sf(resultados_geocod, coords = c("lon", "lat"), crs = 4674)
+
+# Visualização dos resultados de acordo com a precisão da geocodificação
+mapview(resultados_geocod_sf, zcol = "precisao")
+
+```
+
+#### **Acesso aos dados do OSM**
+
+Uma fonte importante de dados espaciais são os mapeamentos colaborativos. Na área de transportes, uma das principais iniciativas é o OpenStreetMap (OSM), que disponibiliza informações sobre a rede viária em escala mundial. Os dados do OSM podem ser acessados através do pacote `osmdata`:
+
+```{r}
+#| eval: false
+# Definição da caixa delimitadora (Bounding Box)
+bb <- opq(bbox = "São Paulo, Brasil")
+
+# Consulta à API Overpass para extrair ciclovias (cycleways)
+ciclovias <- bb %>%
+  add_osm_feature(key = "highway", value = "cycleway") %>%
+  osmdata_sf()
+
+# Extração das geometrias do tipo linha
+linhas_ciclovias <- ciclovias$osm_lines
+
+# Visualização das ciclovias classificadas pelo atributo de segregação (parâmetro zcol)
+mapviewOptions(basemaps = c("Esri.WorldImagery", "OpenTopoMap", "OpenStreetMap"))
+mapview(linhas_ciclovias, zcol = "segregated") 
+ 
+```
+
+#### **Dados de rastreamento**
+
+Outra fonte abundante de dados espaciais, principalmente na área de transportes, são os dados de rastreamento. Esses dados são normalmente obtidos a partir do rastreamento de receptores GNSS, que podem estar acoplados a veículos ou a qualquer outro objeto de interesse. Os dados de rastreamento podem apresentar formatos heterogêneos, mas precisam conter, no mínimo, latitude, longitude, data (dia, mês e ano) e horário do registro. A seguir, apresenta-se um exemplo de espacialização de uma base de dados de rastreamento de ônibus:
+
+```{r}
+#| eval: false
+
+# Leitura da base de dados de rastreamento de ônibus da SPTrans (Linha 34831)
+ rastreio <- fread("rastreio_linha34831_data_01_03_2015.csv")
+
+# Dicionario de dados:
+ #V1 = 'dataserver'
+ #V2 = 'dataavl'
+ #V3 = 'linha' 
+ #V4 = 'lat'
+ #V5 = 'lon' 
+ #V6 = 'codavl' 
+ #V7 = 'desc1' 
+ #V8 = 'desc2'
+ 
+# Espacialização da base de dados de rastreamento
+rastreio_espacializado <- rastreio %>%
+  st_as_sf(coords = c("V5", "V4"), crs = 4326) 
+
+# Visualização da base de dados
+mapview(rastreio_filtro)
+
+```
+
+#### **Dados LiDAR**
+
+Por fim, dados espaciais provenientes de levantamentos com sensores LiDAR tem sido encontrados cada vez mais frequentemente em estudos urbanos. Os sensores LiDAR podem ser acoplados a diferentes tipos de plataformas e constituem uma fonte rica de dados para extrair informações sobre a cobertura da superfície e gerar Modelos Digitais de Elevação. Os dados LiDAR podem ser lidos e processados através dos pacotes `lidR`, `rgl` e `terra`:
+
+```{r}
+#| eval: false
+
+# Ler o arquivo LAZ 
+las <- readLAS("MDS_3313-152_1000.laz") 
+
+# Validar e inspecionar os metadados da nuvem (densidade de pontos, atributos) 
+print(las) 
+
+# Checar a integridade da geometria da nuvem 
+las_check(las) 
+
+# Visualização 3D da Nuvem de Pontos Original 
+plot(las, color = "Z", bg = "black", axis = TRUE) 
+
+# Filtragem dos pontos classificados como Terreno (Padrão ASPRS: Classe 2 = Terreno).
+las_terreno <- filter_ground(las) 
+
+# Visualizar apenas a nuvem filtrada do solo em 3D 
+plot(las_terreno, color = "Z", bg = "white") 
+
+# Geração do Modelo Digital do Terreno (MDT / DTM) 
+mdt <- rasterize_terrain( 
+  las = las_terreno, 
+  res = 0.5, # Resolução espacial da célula (ex: 1 metro) 
+  algorithm = tin() # Algoritmo de interpolação por Triangulação Delaunay 
+  ) 
+
+# Plotagem 2D do MDT gerado (objeto SpatRaster do pacote 'terra') 
+plot(mdt, main = "Modelo Digital do Terreno (MDT) - Resolução: 1m", col = terrain.colors(50)) 
+
+# Exportar o raster resultante para formato GeoTIFF 
+writeRaster(mdt, filename = "MDT.tif", overwrite = TRUE)
+
+```
+
+## Referências:
+
+https://r-spatial.github.io/sf
+
+<https://cran.r-project.org/web/packages/censobr/vignettes/censobr.html>
+
+<https://cran.r-project.org/web/packages/geobr/index.html>
+
+<https://cran.r-project.org/web/packages/geocodebr/index.html>
+
+<https://cran.r-project.org/web/packages/osmdata/index.html>
+
+<https://cran.r-project.org/web/packages/lidR/index.html>
+
+<https://cran.r-project.org/web/packages/rgl/index.html>
+
+<https://cran.r-project.org/web/packages/terra/refman/terra.html>
