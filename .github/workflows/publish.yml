@@ -26,6 +26,12 @@ jobs:
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
+          
+          # 2. Configura o Quarto E ativa a instalação automática do TinyTeX
+      - name: Configurar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true # <--- ESTA LINHA IMPORTANTE PEGA O TINYTEX
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
