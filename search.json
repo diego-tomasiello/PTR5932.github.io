@@ -1,177 +1,172 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "PTR5932 - Introdução à Ciência de Dados Geoespaciais",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "Apresentação\nAutor: Diego Bogado Tomasiello\nData: 18/09/2026\nVivemos em uma era de abundância de dados sem precedentes. O avanço acelerado das tecnologias de informação e comunicação transformou a forma como registramos, analisamos e compreendemos os fenômenos ao nosso redor, gerando um volume maciço de informações que trazem consigo um elemento fundamental: a localização geográfica. No planejamento, na operação e na gestão dos sistemas de transportes e da infraestrutura urbana, essa dimensão espacial pode permitir desvendar padrões complexos da dinâmica territorial.\nNo entanto, a mera disponibilidade de dados geoespaciais não garante sua utilidade. Um dos desafios na academia e no mundo corporativo é a capacidade de transformar grandes volumes de dados geoespaciais em conhecimento estruturado. É nesse cenário desafiador que se insere este livro, concebido como o material didático de apoio para a disciplina PTR-5932: Introdução à Ciência de Dados Geoespaciais, do Programa de Pós-Graduação em Engenharia de Transportes da Escola Politécnica da Universidade de São Paulo (USP).\nEste material foi estruturado especificamente para preencher uma lacuna: a necessidade de uma formação introdutória que forneça fundamentos teóricos e instrumentais para a organização, manipulação e representação de dados geoespaciais. Destinado a estudantes de mestrado, doutorado, pesquisadores e profissionais de áreas correlatas, o material tem como objetivo construir uma base conceitual que dê segurança e autonomia para que, em etapas posteriores de suas trajetórias, os leitores possam avançar para a construção de modelos e análises espaciais.\nPara atingir esse objetivo, o material apresenta laboratórios didáticos com aplicações na linguagem de programação R.",
+    "crumbs": [
+      "Apresentação"
+    ]
+  },
+  {
+    "objectID": "index.html#organização-do-material",
+    "href": "index.html#organização-do-material",
+    "title": "PTR5932 - Introdução à Ciência de Dados Geoespaciais",
+    "section": "Organização do material",
+    "text": "Organização do material\n\n\n\n\n\n\n\nAula\nDescrição\n\n\n\n\n\nIntrodução\n\nInstalação do R e do RStudio. Apresentação da interface do RStudio, sintaxe da linguagem e instalação de pacotes.\n\n\n\nSistemas de Referência e Projeções Cartográficas\n\nTransformação entre Sistemas de Referência e Projeções Cartográficas.\n\n\n\nDados espaciais: tipos, estruturas, formas de representação e formatos de armazenamento\n\nLeitura de diferentes formatos de arquivo no R\n\n\n\nDados de entrada em SIG: Infraestruturas de Dados Espaciais, Censos, Pesquisas Origem e Destino, VGI, Geocodificação, GNSS etc.\n\nPacotes para leitura de diferentes formatos de dados, tratamento topológico e geocodificação de dados.\n\n\n\nOperações espaciais: buffer, clip, dissolve, intersect, union etc.\n\nPrincipais operações de sobreposição e proximidade\n\n\n\nManipulação de dados raster: álgebra de mapas\n\nLeitura, escrita e operações espaciais (locais, focais, zonais e globais) com dados raster\n\n\n\nModelagem de redes de transportes: redes em SIG e em R (r5r)\n\nPrincípios de modelagem de redes de transporte em SIG e em R usando o pacote r5r\n\n\n\nDesign e produção de mapas\n\nProdução de mapas utilizando o pacote cowplot",
+    "crumbs": [
+      "Apresentação"
+    ]
+  },
+  {
+    "objectID": "aula01.html",
+    "href": "aula01.html",
+    "title": "1  Aula 01",
+    "section": "",
+    "text": "1.1 Interface do RStudio\nPré-requisitos:\nInstalar os pacotes: - sf - terra - dplyr - data.table - mapview - osmdata - geobr - geocodebr\nApós instalar, em sequencia, o R e o RStudio, abra o RStudio e observe a sua interface (Figura 01).",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aula 01</span>"
+    ]
+  },
+  {
+    "objectID": "aula01.html#interface-do-rstudio",
+    "href": "aula01.html#interface-do-rstudio",
+    "title": "1  Aula 01",
+    "section": "",
+    "text": "Figura 01 - Interface do RStudio\n\n\n\n1.1.1 Painel de Scripts\nPainel onde você pode editar e salvar scripts em R ou criar documentos computacionais, como Quarto e R Markdown.\n\n\n1.1.2 Painel de Ambiente\nPainel que exibe os objetos temporários em R à medida que são criados durante a sessão do R.\n\n\n1.1.3 Painel Console\nPainel utilizado para escrever comandos curtos e interativos em R.\n\n\n1.1.4 Painel de Saída\nPainel que exibe os gráficos, tabelas ou resultados em HTML gerados pelo código executado, juntamente com os arquivos salvos em disco.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aula 01</span>"
+    ]
+  },
+  {
+    "objectID": "aula01.html#regras-básicas-da-sintaxe-do-r",
+    "href": "aula01.html#regras-básicas-da-sintaxe-do-r",
+    "title": "1  Aula 01",
+    "section": "1.2 Regras básicas da sintaxe do R",
+    "text": "1.2 Regras básicas da sintaxe do R\nA seguir são apresentadas as regras básicas da sintaxe da linguagem R\n\n1.2.1 Como atribuir valores a variáveis\nA atribuição de um valor a uma variável é feita através dos operadores &lt;- ou =:\n\nx &lt;- 10\nx = 10\n\n\n\n1.2.2 Sensibilidade a maiúsculas e minúsculas\nO R diferencia atributos e nomes de variáveis em letras maiúsculas e minúsculas:\n\nAltura &lt;- 170\naltura &lt;- 180\n\nprint(Altura)\n\n[1] 170\n\nprint(altura)\n\n[1] 180\n\n\"SP\" == \"sp\"\n\n[1] FALSE\n\n\n\n\n1.2.3 Como comentar códigos\nOs comentários servem como anotações para organizar o código e torná-lo mais fácil de compreender e replicar. Para inserir um comentário, utilize o operador #. Esse operador pode ser utilizado como cabeçalho para descrever blocos de código, no início de uma linha para evitar que o código seja executado ou ao final de uma linha de código. Para comentar um bloco inteiro de código, selecione as linhas desejadas e pressione Crtl + Shift + C:\n\n# Vamos agora atribuir o valor 170 para a variável Altura\nAltura &lt;- 170\n\naltura &lt;- 180 # Agora atribuímos o valor 180 para a variável altura\n\n# print(altura) # dessa forma evitamos a impressão do valor da variável.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aula 01</span>"
+    ]
+  },
+  {
+    "objectID": "aula01.html#instalação-de-pacotes",
+    "href": "aula01.html#instalação-de-pacotes",
+    "title": "1  Aula 01",
+    "section": "1.3 Instalação de pacotes",
+    "text": "1.3 Instalação de pacotes\nPara instalar pacotes no RStudio, é utilizada a função install.packages() no console do RStudio:\n\ninstall.packages()\n\nPara instalar diversos pacotes de uma única vez, digite no console do RStudio a função install.packages () utilizando como argumento os pacotes sf, terra, dplyr, data.table, mapview, osmdata, geobr e geocodebr, que são alguns dos pacotes que serão utilizados ao longo da disciplina:\n\ninstall.packages(c(\"sf\", \"terra\", \"dplyr\", \"data.table\", \"mapview\", \"osmdata\", \"geobr\", \"geocodebr\"))\n\nApós instalar os pacotes, carregue-os na sessão atual através da função library():\n\nlibrary(sf)",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aula 01</span>"
+    ]
+  },
+  {
+    "objectID": "aula01.html#referências",
+    "href": "aula01.html#referências",
+    "title": "1  Aula 01",
+    "section": "1.4 Referências:",
+    "text": "1.4 Referências:\nhttps://docs.posit.co/ide/user/",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Aula 01</span>"
+    ]
+  },
+  {
+    "objectID": "aula02.html",
+    "href": "aula02.html",
+    "title": "2  Aula 02",
+    "section": "",
+    "text": "2.1 Sistemas de Referência de Coordenadas (CRS), transformação entre sistemas de referencia e reprojeções em R\nA compatibilização dos sistemas de referencia e das projeções cartográficas é fundamental para garantir a correta integração de diferentes dados geoespaciais. Este laboratório didático tem como objetivo exercitar a identificação de Sistemas de Referência de Coordenadas (CRS), a transformação entre sistemas de referencia e a reprojeções de dados geoespaciais.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Aula 02</span>"
+    ]
+  },
+  {
+    "objectID": "aula02.html#sistemas-de-referência-de-coordenadas-crs-transformação-entre-sistemas-de-referencia-e-reprojeções-em-r",
+    "href": "aula02.html#sistemas-de-referência-de-coordenadas-crs-transformação-entre-sistemas-de-referencia-e-reprojeções-em-r",
+    "title": "2  Aula 02",
+    "section": "",
+    "text": "2.1.1 Objetivos de Aprendizagem\n\nInspecionar parâmetros dos CRS (Datum, Elipsoide, Unidade e Projeção) via código EPSG\nIdentificar incompatibilidade de CRS entre diferentes fontes de dados vetoriais.\nReprojetar com a função st_transform().\nAtribuir CRS com a função st_set_crs().\n\n\n\n2.1.2 Roteiro de Execução Passo a Passo\n\n2.1.2.1 Preparação do Ambiente no R\n\n# Carregar as bibliotecas fundamentais \nlibrary(sf)\nlibrary(dplyr)\n\n\n\n2.1.2.2 Leitura do Dado e Inspeção do CRS Original\nBaixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho utilizando a função setwd(). Leia o arquivo zonas_origem_destino.gpkg através da função read_sf() e inspecione seu CRS por meio da função st_crs():\n\n# Configuração do diretório de trabalho\nsetwd() # Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. \"C:/Users/User/Downloads/PTR5932_Lab2\")\n\n# Leitura da camada vetorial (GeoPackage) \nzonas_sp &lt;- read_sf(\"zonas_origem_destino.gpkg\")  \n\n# Inspeção do CRS da camada \nst_crs(zonas_sp)  \n\n# Extração direta do código EPSG e das unidades de medida planimétricas \nepsg_original &lt;- st_crs(zonas_sp)$epsg \nunidade_medida &lt;- st_crs(zonas_sp)$units_gdal  \ncat(\"Código EPSG detectado:\", epsg_original, \"\\n\") \ncat(\"Unidade de medida das coordenadas:\", unidade_medida, \"\\n\") \n\n\nNota: A camada está em WGS84 Sistema de Coordenadas Geográficas (EPSG: 4326), um dos sistemas de referencia mais utilizados em dados geoespaciais. O WGS84 é o sistema de referência utilizado pelo sistema de posicionamento GPS. Nos sistemas de coordenadas geográficas, as coordenadas são expressas em graus decimais.\n\n\n\n2.1.2.3 Incompatibilidade de CRS\nCarregue a segunda camada (estacoes_metro.gpkg) e verifique a compatibilidade entre os CRS:\n\nestacoes &lt;- read_sf(\"estacoes_metro.gpkg\")\n\n# Teste lógico de igualdade entre os sistemas de referência \nif (st_crs(zonas_sp) != st_crs(estacoes)) {message(\"As camadas possuem CRS distintos e não devem ser sobrepostas sem reprojeção!\") } \n\n\nNota: A camada está em Córrego Alegre UTM 23S (EPSG: 22523), um sistema de referência geodésico local utilizado históricamente no Brasil e frequentemente encontrado em dados cartográficos mais antigos, especialmente extraídos a partir de cartas topográficas digitalizadas. O Córrego Alegre foi posteriormente substituído pelo SAD69 e, mais recentemente, pelo SIRGAS2000. Como a projeção cartográfica adotada é a Universal Transversa de Mercator (UTM), as coordenadas são expressas em metros.\n\n\n\n2.1.2.4 Transformação Espacial (Reprojeção)\nPara a Região Metropolitana de São Paulo, adotaremos o sistema de referência projetado SIRGAS 2000 / UTM Fuso 23S (EPSG: 31983), que utiliza unidades métricas. Para reprojetar os dados, utilize a função st_transform(), informando como parâmetros a variável de entrada e o código EPSG do sistema de referência, 31983:\n\n# Reprojeção da camada de Zonas de Tráfego para SIRGAS 2000 / UTM Fuso 23S \nzonas_utm &lt;- st_transform(zonas_sp, crs = 31983)  \n\n# Reprojeção da camada de Estações para SIRGAS 2000 / UTM Fuso 23S \nestacoes_utm &lt;- st_transform(estacoes, crs = 31983) \n\n# Confirmação do novo CRS \nst_crs(zonas_utm)$Name # Retorno esperado: \"SIRGAS 2000 / UTM zone 23S\" \n\n# Confirmação do novo CRS \nst_crs(estacoes_utm)$Name # Retorno esperado: \"SIRGAS 2000 / UTM zone 23S\" \n\n\n\n2.1.2.5 Atribuição de um sistema de referência e projeção\nCaso a camada de entrada não possua um sistema de referência e projeção, é possível atribuir o CRS adequado à camada, desde que essa informação seja conhecida previamente, utilizando a função st_set_crs():\n\n# Leitura da camada de linhas do Metrô de São Paulo\nlinhas_metro &lt;- read_sf(\"linhas_metro_SIRGAS2000_UTM23S.gpkg\")\n\n# Consulta do CRS da camada\nst_crs(linhas_metro) #Retorno esperado: NA\n\n# Atribuição do sistema de referência e projeção corretos (baseado no nome da camada)\nlinhas_metro &lt;- linhas_metro %&gt;%\n  st_set_crs(31983)\n\n# Consulta do CRS da camada\nst_crs(linhas_metro)$Name #Retorno esperado: SIRGAS 2000 / UTM zone 23S",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Aula 02</span>"
+    ]
+  },
+  {
+    "objectID": "aula02.html#referências",
+    "href": "aula02.html#referências",
+    "title": "2  Aula 02",
+    "section": "2.2 Referências:",
+    "text": "2.2 Referências:\nhttps://r-spatial.github.io/sf\nhttps://cran.r-project.org/web/packages/sf/index.html\nhttps://r.geocompx.org/reproj-geo-data",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Aula 02</span>"
+    ]
+  },
+  {
+    "objectID": "aula03.html",
+    "href": "aula03.html",
+    "title": "3  Aula 03",
+    "section": "",
+    "text": "3.1 Leitura, filtragem, relacionamento, criação de novos campos e representação de dados vetoriais e matriciais\nOs formatos de representação vetorial e matricial são os mais utilizados para modelar a realidade. Este laboratório didático possui como objetivo exercitar a leitura, filtragem, relacionamento, criação de novos campos e a representação de dados vetoriais e matriciais.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Aula 03</span>"
+    ]
+  },
+  {
+    "objectID": "aula03.html#leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais",
+    "href": "aula03.html#leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais",
+    "title": "3  Aula 03",
+    "section": "",
+    "text": "3.1.1 Objetivos de Aprendizagem\n\nExercitar a leitura e a filtragem de dados vetoriais através das funções read_sf() e filter().\nRelacionar a tabela de atributos de um dado vetorial com um tabular através da função left_join().\nCriar um novo campo com operações matemáticas de campos já existentes através da função mutate() e visualizar o dado vetorial através da função mapview().\nRasterizar um dado vetorial através da função rasterize() e visualizá-lo através da função plot().\nExportar dados vetoriais e raster, respectivamente, através das funções write_sf() e writeRaster().\n\n\n\n3.1.2 Preparação do Ambiente no R\n\n# Carregar as bibliotecas fundamentais \nlibrary(sf)\nlibrary(terra)\nlibrary(dplyr)\nlibrary(data.table)\nlibrary(mapview)\n\n\n\n3.1.3 Roteiro de Execução Passo a Passo\n\n3.1.3.1 Leitura e filtragem da base de dados vetorial\nBaixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho através da função setwd(). Leia o arquivo zonas_origem_destino.gpkg utilizando a função read_sf() e filtre somente as zonas OD pertencentes ao município de São Paulo (código do município == 36) através da função filter():\n\n# Configure o diretório de trabalho\nsetwd() # Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. \"C:/Users/User/Downloads/PTR5932_Lab3\")\n\n# Leia a camada vetorial (GeoPackage) e filtre somente as zonas OD do município de São Paulo \nzonas_od &lt;- read_sf(\"zonas_origem_destino.gpkg\") %&gt;%\n  filter(cd_municipio == 36)\n\n\nNota: O comando %&gt;% e a função filter() só funcionarão se a biblioteca dplyr tiver sido carregada.\n\n\n\n3.1.3.2 Leitura do arquivo tabular e relacionamento de tabela\nLeia o arquivo tabela01.csv através da função fread(). Em seguida, relacione o dado tabular com o das zonas OD através da função left_join(), crie um novo campo com o valor da densidade de domicilios por hectare através da função mutate() e visualize os resultados através da função mapview():\n\n#Leia o dado tabular\ntabela01 &lt;- fread(\"Tabela01.csv\", encoding = \"Latin-1\")\n\n# Relacione a tabela preservando a classe espacial 'sf' \nzonas_od_join &lt;- zonas_od %&gt;%\n  left_join(tabela01, by = c(\"cd_original_zona_origem_destino\"=\"Zona\"))\n\n# Crie um campo nomeado \"dens_domicilios\" que recebe os valores da divisão dos campos \"Domicilios\" e \"Area_ha\"\nzonas_od_join &lt;- zonas_od_join %&gt;%\n  mutate(dens_domicilios = Domicilios/Area_ha)\n\n# Mude o mapa base da função mapview para imagens de satélite \nmapviewOptions(basemaps = c(\"Esri.WorldImagery\", \"OpenTopoMap\", \"OpenStreetMap\"))\n\n# Visualize a variável de domicílios através da função mapview\nmapview(zonas_od_join, zcol = \"dens_domicilios\")\n\n\nNota: Como o dado tabular possui acentos e caracteres especiais, foi adotado o parâmetro de encoding = Latin-1 dentro da função fread().\n\n\n\n3.1.3.3 Rasterização da camada vetorial\nPara rasterizar dados vetoriais, utilize as funções rast() e rasterize(). Em seguida, visualize o arquivo raster através da função plot():\n\n# crie o arquivo raster de template\nraster_template &lt;- rast(zonas_od_join, resolution = 0.00009)\n\n# Execute a rasterização definindo o atributo numérico de interesse \nraster_resultado &lt;- rasterize( x = zonas_od_join, y = raster_template, field = \"dens_domicilios\")\n\n# Visualize o raster gerado\nplot(raster_resultado, main = \"Densidade de domicílios por hectare\")\n\n\n\n3.1.3.4 Exporte arquivos vetoriais e raster\nExporte arquivos vetoriais e raster, respectivamente, através das funções write_sf() e writeRaster():\n\n# Exporte o dado vetorial utilizando a função write_sf()\nwrite_sf(zonas_od_join, \"zonas_od_join.gpkg\")\n\n# Exporte o dado raster utilizando a função writeRaster()\nwriteRaster(x = raster_resultado, filename = \"densidade_domicilios.tif\", filetype = \"GTiff\", overwrite = TRUE )",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Aula 03</span>"
+    ]
+  },
+  {
+    "objectID": "aula03.html#referências",
+    "href": "aula03.html#referências",
+    "title": "3  Aula 03",
+    "section": "3.2 Referências:",
+    "text": "3.2 Referências:\nhttps://r-spatial.github.io/sf\nhttps://cran.r-project.org/web/packages/terra/refman/terra.html",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Aula 03</span>"
+    ]
+  },
+  {
+    "objectID": "aula04.html",
+    "href": "aula04.html",
+    "title": "4  Aula 04",
+    "section": "",
+    "text": "4.1 Acesso e leitura de dados da INDE, Censos, OpenStreetMap, Geocodificação, Rastreamento e LiDAR\nA etapa de entrada de dados é fundamental para qualquer projeto em Ciência de Dados Geoespaciais. A presente aula aborda como importar algumas das principais fontes de dados espaciais. O conteúdo abrange análise de topologia e o acesso a bases de dados como a Infraestrutura Nacional de Dados Espaciais (INDE), dados de Censos, Geocodificação, OpenStreetMap, Rastreamento e LiDAR.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Aula 04</span>"
+    ]
+  },
+  {
+    "objectID": "aula04.html#acesso-e-leitura-de-dados-da-inde-censos-openstreetmap-geocodificação-rastreamento-e-lidar",
+    "href": "aula04.html#acesso-e-leitura-de-dados-da-inde-censos-openstreetmap-geocodificação-rastreamento-e-lidar",
+    "title": "4  Aula 04",
+    "section": "",
+    "text": "4.1.1 Objetivos de Aprendizagem\n\nIdentificar e corrigir erros topológicos.\nAcessar dados da Infraestrutura Nacional de Dados Espaciais (INDE).\nAcessar dados do Censo através dos pacotes censobr e geobr.\nGeocodificar uma lista de endereços através do pacote geocodebr.\nAcessar dados do OpenStreetMap através do pacote osmdata.\nLer e tratar dados de rastreamento.\nLer e tratar dados LiDAR através dos pacotes lidR e terra\n\n\n\n4.1.2 Preparação do Ambiente no R\n\n# Carregar as bibliotecas fundamentais \nlibrary(sf)          # Manipulação de dados vetoriais (Simple Features)\nlibrary(tidyverse)   # Manipulação e visualização de dados (dplyr, ggplot2)\nlibrary(geobr)       # Malhas territoriais oficiais do IBGE\nlibrary(censobr)     # Microdados e agregados censitários do IBGE\nlibrary(geocodebr)   # Geocodificação local com base no CNEFE/IBGE\nlibrary(lwgeom)      # funções para análise topológica\nlibrary(osmdata)     # Consulta a dados VGI (OpenStreetMap via Overpass API)\nlibrary(mapview)     # Cartografia temática interativa\nlibrary(rstudioapi)  # Apontar o diretório de trabalho\nlibrary(data.table)  # Leitura de dados tabulares\nlibrary(lidR)        # Leitura de dados LiDAR (LAS/LAZ)\nlibrary(terra)       # Leitura, tratamento e exportação de dados raster\nlibrary(rgl)         # Renderização e visualização 3D\n\n#Caso não tenha instalado algum dos pacotes anteriores, execute: \n#install.packages(\"nome do pacote\")\n\n# Configure o diretório de trabalho\npath &lt;- selectDirectory(caption = \"Select Working Directory\") # rode esta linha para apontar o diretório de trabalho\n\nsetwd(path)\nmapviewOptions(basemaps = c(\"Esri.WorldImagery\", \"OpenTopoMap\", \"OpenStreetMap\"))\n\n\nNota: O comando selectDirectory() abre uma interface para que o usuário indique o diretório de trabalho.\n\n\n\n4.1.3 Roteiro de Execução Passo a Passo\n\n4.1.3.1 Análise topológica das Zonas OD 2023 de São Paulo\nQuando trabalhamos com dados geoespaciais vetoriais, é essencial verificarmos a sua consistência topológica. Inconsistências topológicas, como auto-intersecções (self-intersections), sobreposições indevidas (overlaps) e lacunas não planejadas (gaps) entre polígonos adjacentes, podem comprometer a precisão de análises territoriais, distorcer cálculos de área e provocar falhas na execução de operações espaciais. O script abaixo utiliza os pacotes sf e lwgeom, para identificar e corrigir automaticamente falhas topológicas em camadas vetoriais de polígonos:\n\n# Ler arquivo shapefile das Zonas OD 2023 disponibilizado pelo Metrô \nzonas_od &lt;- read_sf(\"Zonas_2023.shp\", options = \"ENCODING=LATIN1\") \n\n# Verificar se existem geometrias inválidas \nzonas_od$valido &lt;- st_is_valid(zonas_od) \n\n# Contar de geometrias válidas e inválidas \ntable(zonas_od$valido) \n\n# Identificar o motivo exato de cada invalidade \nzonas_od$motivo_erro &lt;- st_is_valid(zonas_od, reason = TRUE) \n\n# Listar os tipos de erros encontrados no dataset e armazená-los em uma variável. Inspecionar os erros após rodar a linha abaixo\nerros &lt;- zonas_od %&gt;% \n  filter(!valido) %&gt;% \n  st_drop_geometry() %&gt;% \n  count(motivo_erro, sort = TRUE)\n\n# Aplicar a correção automáticamente\nzonas_od_corrigidas &lt;- st_make_valid(zonas_od)\n\n# Verificar se ainda são encotradas geometrias inválidas \nzonas_od_corrigidas$valido &lt;- st_is_valid(zonas_od_corrigidas) \n\n# Contar geometrias válidas e inválidas \ntable(zonas_od_corrigidas$valido) \n\n# Visualizar as Zonas OD de 2023\nmapview(zonas_od_corrigidas) \n\n\nNota: Os erros mais comuns, do tipo “Self-intersection”, ocorrem quando a linha de contorno da zona cruza consigo mesma formando um laço.\n\n\n\n4.1.3.2 Acesso a Infraestrutura Nacional de Dados Espaciais (INDE)\nA INDE concentra o acesso a diversas bases de dados oficiais de orgãos do governo. No exemplo abaixo, acessaremos o serviço de WFS (Web Feature Service), por onde são disponibilizados dados vetoriais. Para isso, indique a URL do serviço WFS, liste as camadas existentes e faça a leitura da camada de arruamento utilizando a função st_read(). Em seguida, inspecione o sistema de referência e a projeção cartográfica da base de dados de arruamento e, caso seja necessário, faça os devidos ajustes. Por fim, visualize a base de dados através da função mapview(), diferenciando o arruamento de acordo com seu revestimento:\n\n# Consumo de uma camada WFS (Web Feature Service) da INDE\nurl_wfs &lt;- sprintf(\"https://geoservicos.inde.gov.br/geoserver/wfs\") # Exemplo conceitual de endpoint WFS\n\n#info_camadas &lt;- st_layers(paste0(\"WFS:\", url_wfs)) # Lista as camadas do WFS, porém para a INDE fica muito demorado, pois são muitas camadas. \n\n# Leitura direta de camada espacial vetorial via protocolo OGC WFS sem download manual\n# sf permite conexão direta com URLs WFS/GeoJSON da INDE\nIDE_camada &lt;- st_read(dsn = paste0(url_wfs, \"?service=WFS&version=1.0.0&request=GetFeature&typeName=INEA:gln_arruamento_25_armacao_dos_buzios\"))\n\n# Inspeção do Sistema de Referência de Coordenadas (CRS / SIRGAS 2000 - EPSG:4674)\nst_crs(IDE_camada)\n\nIDE_camada &lt;- st_set_crs(IDE_camada, 4674)\nst_crs(IDE_camada)\n\nmapviewOptions(basemaps = c(\"Esri.WorldImagery\", \"OpenTopoMap\", \"OpenStreetMap\"))\n\nmapview::mapview(IDE_camada, zcol = \"revestimen\")\n\n\nNota: Foi atribuído o EPSG 4674, pois todos os dados disponibilizados através da INDE estão no referencial SIRGAS2000 e em Sistemas de Coordenadas Geográficas.\n\n\n\n4.1.3.3 Acesso a dados do Censo Demográfico\nSerão utilizados os pacotes geobr e censobr para baixar, respectivamente, os dados espaciais e os dados tabulares dos setores censitários. Em seguida, os dados são relacionados através da função left_join() e visualizados através da função mapview():\n\n# Download da malha de setores censitários de um município (ex: Armação de Búzios/RJ) via geobr\nsetores_ab &lt;- read_census_tract(year = 2022, code_tract = 3300233)\nst_crs(setores_ab)\n\n# Leitura dos dados do Censo 2022 agregados por Setor Censitário via censobr\ndados_setores &lt;- read_tracts(year = 2022, dataset = \"Basico\") %&gt;%\n  filter(code_muni == 3300233) %&gt;% # filtra apenas o município de Armação de Búzios/RJ\n  collect() # Traz para a memória o resultado filtrado\n\ndata_dictionary(year = 2022, dataset = \"tracts\") # dicionario de dados para verificar os nomes das variaveis e sua descrição\n\ndados_setores &lt;- dados_setores %&gt;%\n  select(code_tract, V0001) # seleciona apenas as variaveis de código do setor (code_tract) e População total (V001)\n\nsetores_ab_join &lt;- setores_ab %&gt;%\n  left_join(dados_setores, by=\"code_tract\") #join do dado espacial de setores censitários com o dado de população\n\n# Visualizacao dos dados de população por setor censitário de 2022\nmapview(setores_ab_join, zcol = \"V0001\")\n\n\nNota: Na função read_tracts() foi selecionado o dataset “Basico”. No entanto, existem ainda os datasets “Pessoas”, “Domicilios”, “Obitos”, “Indigenas”, “Quilombolas”, “ResponsavelRenda” e “Entorno”, ou seja, existem muitos outros dados a serem explorados.\n\n\n\n4.1.3.4 Geocodificação\nA geocodificação consiste em transformar um endereço (ou lista de endereços) em um par (ou vários pares) de coordenadas. A geocodificação pode ser realizada gratuitamente através do pacote geocodebr:\n\n# Leitura da lista de endereços para geocodificação\nenderecos &lt;- fread(\"RMSPEstb_2014_10000reg.csv\")\n  \n# Mapeamento dos campos com definir_campos()\ncampos &lt;- definir_campos(\n  logradouro = \"nomelogradouro\",\n  numero = \"numero\",\n  municipio = \"municipio\",\n  estado = \"uf\")\n\n# 3. Execução da geocodificação via geocodebr\nresultados_geocod &lt;- geocode(\n  enderecos = enderecos,\n  campos_endereco = campos\n)\n\n# O resultado retorna com níveis de precisão da geocodificação, longitude e latitude \nhead(resultados_geocod)\n\n# Espacialização dos resultados\nresultados_geocod_sf &lt;- st_as_sf(resultados_geocod, coords = c(\"lon\", \"lat\"), crs = 4674)\n\n# Visualização dos resultados de acordo com a precisão da geocodificação\nmapview(resultados_geocod_sf, zcol = \"precisao\")\n\n\n\n4.1.3.5 Acesso aos dados do OSM\nUma fonte importante de dados espaciais são os mapeamentos colaborativos. Na área de transportes, uma das principais iniciativas é o OpenStreetMap (OSM), que disponibiliza informações sobre a rede viária em escala mundial. Os dados do OSM podem ser acessados através do pacote osmdata:\n\n# Definição da caixa delimitadora (Bounding Box)\nbb &lt;- opq(bbox = \"São Paulo, Brasil\")\n\n# Consulta à API Overpass para extrair ciclovias (cycleways)\nciclovias &lt;- bb %&gt;%\n  add_osm_feature(key = \"highway\", value = \"cycleway\") %&gt;%\n  osmdata_sf()\n\n# Extração das geometrias do tipo linha\nlinhas_ciclovias &lt;- ciclovias$osm_lines\n\n# Visualização das ciclovias classificadas pelo atributo de segregação (parâmetro zcol)\nmapviewOptions(basemaps = c(\"Esri.WorldImagery\", \"OpenTopoMap\", \"OpenStreetMap\"))\nmapview(linhas_ciclovias, zcol = \"segregated\") \n\n\n\n4.1.3.6 Dados de rastreamento\nOutra fonte abundante de dados espaciais, principalmente na área de transportes, são os dados de rastreamento. Esses dados são normalmente obtidos a partir do rastreamento de receptores GNSS, que podem estar acoplados a veículos ou a qualquer outro objeto de interesse. Os dados de rastreamento podem apresentar formatos heterogêneos, mas precisam conter, no mínimo, latitude, longitude, data (dia, mês e ano) e horário do registro. A seguir, apresenta-se um exemplo de espacialização de uma base de dados de rastreamento de ônibus:\n\n# Leitura da base de dados de rastreamento de ônibus da SPTrans (Linha 34831)\n rastreio &lt;- fread(\"rastreio_linha34831_data_01_03_2015.csv\")\n\n# Dicionario de dados:\n #V1 = 'dataserver'\n #V2 = 'dataavl'\n #V3 = 'linha' \n #V4 = 'lat'\n #V5 = 'lon' \n #V6 = 'codavl' \n #V7 = 'desc1' \n #V8 = 'desc2'\n \n# Espacialização da base de dados de rastreamento\nrastreio_espacializado &lt;- rastreio %&gt;%\n  st_as_sf(coords = c(\"V5\", \"V4\"), crs = 4326) \n\n# Visualização da base de dados\nmapview(rastreio_filtro)\n\n\n\n4.1.3.7 Dados LiDAR\nPor fim, dados espaciais provenientes de levantamentos com sensores LiDAR tem sido encontrados cada vez mais frequentemente em estudos urbanos. Os sensores LiDAR podem ser acoplados a diferentes tipos de plataformas e constituem uma fonte rica de dados para extrair informações sobre a cobertura da superfície e gerar Modelos Digitais de Elevação. Os dados LiDAR podem ser lidos e processados através dos pacotes lidR, rgl e terra:\n\n# Ler o arquivo LAZ \nlas &lt;- readLAS(\"MDS_3313-152_1000.laz\") \n\n# Validar e inspecionar os metadados da nuvem (densidade de pontos, atributos) \nprint(las) \n\n# Checar a integridade da geometria da nuvem \nlas_check(las) \n\n# Visualização 3D da Nuvem de Pontos Original \nplot(las, color = \"Z\", bg = \"black\", axis = TRUE) \n\n# Filtragem dos pontos classificados como Terreno (Padrão ASPRS: Classe 2 = Terreno).\nlas_terreno &lt;- filter_ground(las) \n\n# Visualizar apenas a nuvem filtrada do solo em 3D \nplot(las_terreno, color = \"Z\", bg = \"white\") \n\n# Geração do Modelo Digital do Terreno (MDT / DTM) \nmdt &lt;- rasterize_terrain( \n  las = las_terreno, \n  res = 0.5, # Resolução espacial da célula (ex: 1 metro) \n  algorithm = tin() # Algoritmo de interpolação por Triangulação Delaunay \n  ) \n\n# Plotagem 2D do MDT gerado (objeto SpatRaster do pacote 'terra') \nplot(mdt, main = \"Modelo Digital do Terreno (MDT) - Resolução: 1m\", col = terrain.colors(50)) \n\n# Exportar o raster resultante para formato GeoTIFF \nwriteRaster(mdt, filename = \"MDT.tif\", overwrite = TRUE)",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Aula 04</span>"
+    ]
+  },
+  {
+    "objectID": "aula04.html#referências",
+    "href": "aula04.html#referências",
+    "title": "4  Aula 04",
+    "section": "4.2 Referências:",
+    "text": "4.2 Referências:\nhttps://r-spatial.github.io/sf\nhttps://cran.r-project.org/web/packages/censobr/vignettes/censobr.html\nhttps://cran.r-project.org/web/packages/geobr/index.html\nhttps://cran.r-project.org/web/packages/geocodebr/index.html\nhttps://cran.r-project.org/web/packages/osmdata/index.html\nhttps://cran.r-project.org/web/packages/lidR/index.html\nhttps://cran.r-project.org/web/packages/rgl/index.html\nhttps://cran.r-project.org/web/packages/terra/refman/terra.html",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Aula 04</span>"
+    ]
   },
   {
     "objectID": "referencias.html",
     "href": "referencias.html",
     "title": "Referências",
     "section": "",
-    "text": "Referências\nBURROUGH, P. A.; MCDONNELL, R. A. Principles of geographical information systems. New York: Oxford University Press, 1998. 334p.\nDE SMITH, M. J.; GOODCHILD, M. F.; LONGLEY, P. Geospatial analysis: a comprehensive guide to principles, techniques and software tools. Troubador Publishing Ltd, 2025 - 7th edition. Disponível em: http://www.spatialanalysisonline.com/HTML/index.html\nGEMAEL, C. Introdução à Geodésia Física. Editora da UFPR. Curitiba, 1999.\nHOFMANN-WELLENHOF, B.; LICHTENEGGER, H.; WASLE, E. GNSS: Global Navigation Satellite Systems – GPS, GLONASS, Galileo & more. Austria: Springer-Verlag Wien New York, 1a edição, 2008. 516p. ISBN 978-3-211-73012-6\nLOVELACE, R.; NOWOSAD, J.; MUENCHOW, J.Geocomputation with R. Chapman and Hall/CRC, 2025. Disponível em: https://doi.org/10.1201/9780203730058\nMACLACHLAN, A.; DENNETT, A. An Applied Geographic Information Systems and Science Course in R.Journal of Open Source Education, v. 5, n. 50, 2022. Disponível em: https://doi.org/10.21105/jose.00141\nMONICO, J. F. G. Posicionamento pelo GNSS: Descrição, fundamentos e aplicações. São Paulo, Editora UNESP, 2007. 476p. ISBN: 978-85-7139-788-0\nPEREIRA, R. H.; SARAIVA, M.; HERSZENHUT, D.; BRAGA, C. K. V.; CONWAY, M. W. r5r: rapid realistic routing on multimodal transport networks with r 5 in r.Findings, 2021. https://doi.org/10.32866/001c.21262\nRICHARDUS, P.; ADLER, R.K. Map Projections for Geodesists, Cartographers and Geographers. North-Holland Publishing Company, 1972.\nTEAM, R. Core. R language definition.Vienna, Austria: R foundation for statistical computing, v. 3, n. 1, p. 116, 2000. https://mirror.twds.com.tw/CRAN/doc/FAQ/r-release/R-lang.pdf",
+    "text": "BURROUGH, P. A.; MCDONNELL, R. A. Principles of geographical information systems. New York: Oxford University Press, 1998. 334p.\nDE SMITH, M. J.; GOODCHILD, M. F.; LONGLEY, P. Geospatial analysis: a comprehensive guide to principles, techniques and software tools. Troubador Publishing Ltd, 2025 - 7th edition. Disponível em: http://www.spatialanalysisonline.com/HTML/index.html\nGEMAEL, C. Introdução à Geodésia Física. Editora da UFPR. Curitiba, 1999.\nHOFMANN-WELLENHOF, B.; LICHTENEGGER, H.; WASLE, E. GNSS: Global Navigation Satellite Systems – GPS, GLONASS, Galileo & more. Austria: Springer-Verlag Wien New York, 1a edição, 2008. 516p. ISBN 978-3-211-73012-6\nLOVELACE, R.; NOWOSAD, J.; MUENCHOW, J.Geocomputation with R. Chapman and Hall/CRC, 2025. Disponível em: https://doi.org/10.1201/9780203730058\nMACLACHLAN, A.; DENNETT, A. An Applied Geographic Information Systems and Science Course in R.Journal of Open Source Education, v. 5, n. 50, 2022. Disponível em: https://doi.org/10.21105/jose.00141\nMONICO, J. F. G. Posicionamento pelo GNSS: Descrição, fundamentos e aplicações. São Paulo, Editora UNESP, 2007. 476p. ISBN: 978-85-7139-788-0\nPEREIRA, R. H.; SARAIVA, M.; HERSZENHUT, D.; BRAGA, C. K. V.; CONWAY, M. W. r5r: rapid realistic routing on multimodal transport networks with r 5 in r.Findings, 2021. https://doi.org/10.32866/001c.21262\nRICHARDUS, P.; ADLER, R.K. Map Projections for Geodesists, Cartographers and Geographers. North-Holland Publishing Company, 1972.\nTEAM, R. Core. R language definition.Vienna, Austria: R foundation for statistical computing, v. 3, n. 1, p. 116, 2000. https://mirror.twds.com.tw/CRAN/doc/FAQ/r-release/R-lang.pdf",
     "crumbs": [
       "Referências"
-    ]
-  },
-  {
-    "objectID": "aula03.html",
-    "href": "aula03.html",
-    "title": "Aula 03",
-    "section": "",
-    "text": "Os formatos de representação vetorial e matricial são os mais utilizados para modelar a realidade. Este laboratório didático possui como objetivo exercitar a leitura, filtragem, relacionamento, criação de novos campos e a representação de dados vetoriais e matriciais.\n\n\n\n\n\nExercitar a leitura e a filtragem de dados vetoriais através das funções read_sf() e filter().\nRelacionar a tabela de atributos de um dado vetorial com um tabular através da função left_join().\nCriar um novo campo com operações matemáticas de campos já existentes através da função mutate() e visualizar o dado vetorial através da função mapview().\nRasterizar um dado vetorial através da função rasterize() e visualizá-lo através da função plot().\nExportar dados vetoriais e raster, respectivamente, através das funções write_sf() e writeRaster().\n\n\n\n\n\n# Carregar as bibliotecas fundamentais \nlibrary(sf)\nlibrary(terra)\nlibrary(dplyr)\nlibrary(data.table)\nlibrary(mapview)\n\n\n\n\n\n\nBaixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho através da função setwd(). Leia o arquivo zonas_origem_destino.gpkg utilizando a função read_sf() e filtre somente as zonas OD pertencentes ao município de São Paulo (código do município == 36) através da função filter():\n\n# Configure o diretório de trabalho\nsetwd() # Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. \"C:/Users/User/Downloads/PTR5932_Lab3\")\n\n# Leia a camada vetorial (GeoPackage) e filtre somente as zonas OD do município de São Paulo \nzonas_od &lt;- read_sf(\"zonas_origem_destino.gpkg\") %&gt;%\n  filter(cd_municipio == 36)\n\n\nNota: O comando %&gt;% e a função filter() só funcionarão se a biblioteca dplyr tiver sido carregada.\n\n\n\n\nLeia o arquivo tabela01.csv através da função fread(). Em seguida, relacione o dado tabular com o das zonas OD através da função left_join(), crie um novo campo com o valor da densidade de domicilios por hectare através da função mutate() e visualize os resultados através da função mapview():\n\n#Leia o dado tabular\ntabela01 &lt;- fread(\"Tabela01.csv\", encoding = \"Latin-1\")\n\n# Relacione a tabela preservando a classe espacial 'sf' \nzonas_od_join &lt;- zonas_od %&gt;%\n  left_join(tabela01, by = c(\"cd_original_zona_origem_destino\"=\"Zona\"))\n\n# Crie um campo nomeado \"dens_domicilios\" que recebe os valores da divisão dos campos \"Domicilios\" e \"Area_ha\"\nzonas_od_join &lt;- zonas_od_join %&gt;%\n  mutate(dens_domicilios = Domicilios/Area_ha)\n\n# Mude o mapa base da função mapview para imagens de satélite \nmapviewOptions(basemaps = c(\"Esri.WorldImagery\", \"OpenTopoMap\", \"OpenStreetMap\"))\n\n# Visualize a variável de domicílios através da função mapview\nmapview(zonas_od_join, zcol = \"dens_domicilios\")\n\n\nNota: Como o dado tabular possui acentos e caracteres especiais, foi adotado o parâmetro de encoding = Latin-1 dentro da função fread().\n\n\n\n\nPara rasterizar dados vetoriais, utilize as funções rast() e rasterize(). Em seguida, visualize o arquivo raster através da função plot():\n\n# crie o arquivo raster de template\nraster_template &lt;- rast(zonas_od_join, resolution = 0.00009)\n\n# Execute a rasterização definindo o atributo numérico de interesse \nraster_resultado &lt;- rasterize( x = zonas_od_join, y = raster_template, field = \"dens_domicilios\")\n\n# Visualize o raster gerado\nplot(raster_resultado, main = \"Densidade de domicílios por hectare\")\n\n\n\n\nExporte arquivos vetoriais e raster, respectivamente, através das funções write_sf() e writeRaster():\n\n# Exporte o dado vetorial utilizando a função write_sf()\nwrite_sf(zonas_od_join, \"zonas_od_join.gpkg\")\n\n# Exporte o dado raster utilizando a função writeRaster()\nwriteRaster(x = raster_resultado, filename = \"densidade_domicilios.tif\", filetype = \"GTiff\", overwrite = TRUE )\n\n\n\n\n\n\nhttps://r-spatial.github.io/sf\nhttps://cran.r-project.org/web/packages/terra/refman/terra.html",
-    "crumbs": [
-      "Aula 03"
-    ]
-  },
-  {
-    "objectID": "aula03.html#leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais",
-    "href": "aula03.html#leitura-filtragem-relacionamento-criação-de-novos-campos-e-representação-de-dados-vetoriais-e-matriciais",
-    "title": "Aula 03",
-    "section": "",
-    "text": "Exercitar a leitura e a filtragem de dados vetoriais através das funções read_sf() e filter().\nRelacionar a tabela de atributos de um dado vetorial com um tabular através da função left_join().\nCriar um novo campo com operações matemáticas de campos já existentes através da função mutate() e visualizar o dado vetorial através da função mapview().\nRasterizar um dado vetorial através da função rasterize() e visualizá-lo através da função plot().\nExportar dados vetoriais e raster, respectivamente, através das funções write_sf() e writeRaster().\n\n\n\n\n\n# Carregar as bibliotecas fundamentais \nlibrary(sf)\nlibrary(terra)\nlibrary(dplyr)\nlibrary(data.table)\nlibrary(mapview)\n\n\n\n\n\n\nBaixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho através da função setwd(). Leia o arquivo zonas_origem_destino.gpkg utilizando a função read_sf() e filtre somente as zonas OD pertencentes ao município de São Paulo (código do município == 36) através da função filter():\n\n# Configure o diretório de trabalho\nsetwd() # Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. \"C:/Users/User/Downloads/PTR5932_Lab3\")\n\n# Leia a camada vetorial (GeoPackage) e filtre somente as zonas OD do município de São Paulo \nzonas_od &lt;- read_sf(\"zonas_origem_destino.gpkg\") %&gt;%\n  filter(cd_municipio == 36)\n\n\nNota: O comando %&gt;% e a função filter() só funcionarão se a biblioteca dplyr tiver sido carregada.\n\n\n\n\nLeia o arquivo tabela01.csv através da função fread(). Em seguida, relacione o dado tabular com o das zonas OD através da função left_join(), crie um novo campo com o valor da densidade de domicilios por hectare através da função mutate() e visualize os resultados através da função mapview():\n\n#Leia o dado tabular\ntabela01 &lt;- fread(\"Tabela01.csv\", encoding = \"Latin-1\")\n\n# Relacione a tabela preservando a classe espacial 'sf' \nzonas_od_join &lt;- zonas_od %&gt;%\n  left_join(tabela01, by = c(\"cd_original_zona_origem_destino\"=\"Zona\"))\n\n# Crie um campo nomeado \"dens_domicilios\" que recebe os valores da divisão dos campos \"Domicilios\" e \"Area_ha\"\nzonas_od_join &lt;- zonas_od_join %&gt;%\n  mutate(dens_domicilios = Domicilios/Area_ha)\n\n# Mude o mapa base da função mapview para imagens de satélite \nmapviewOptions(basemaps = c(\"Esri.WorldImagery\", \"OpenTopoMap\", \"OpenStreetMap\"))\n\n# Visualize a variável de domicílios através da função mapview\nmapview(zonas_od_join, zcol = \"dens_domicilios\")\n\n\nNota: Como o dado tabular possui acentos e caracteres especiais, foi adotado o parâmetro de encoding = Latin-1 dentro da função fread().\n\n\n\n\nPara rasterizar dados vetoriais, utilize as funções rast() e rasterize(). Em seguida, visualize o arquivo raster através da função plot():\n\n# crie o arquivo raster de template\nraster_template &lt;- rast(zonas_od_join, resolution = 0.00009)\n\n# Execute a rasterização definindo o atributo numérico de interesse \nraster_resultado &lt;- rasterize( x = zonas_od_join, y = raster_template, field = \"dens_domicilios\")\n\n# Visualize o raster gerado\nplot(raster_resultado, main = \"Densidade de domicílios por hectare\")\n\n\n\n\nExporte arquivos vetoriais e raster, respectivamente, através das funções write_sf() e writeRaster():\n\n# Exporte o dado vetorial utilizando a função write_sf()\nwrite_sf(zonas_od_join, \"zonas_od_join.gpkg\")\n\n# Exporte o dado raster utilizando a função writeRaster()\nwriteRaster(x = raster_resultado, filename = \"densidade_domicilios.tif\", filetype = \"GTiff\", overwrite = TRUE )",
-    "crumbs": [
-      "Aula 03"
-    ]
-  },
-  {
-    "objectID": "aula03.html#referências",
-    "href": "aula03.html#referências",
-    "title": "Aula 03",
-    "section": "",
-    "text": "https://r-spatial.github.io/sf\nhttps://cran.r-project.org/web/packages/terra/refman/terra.html",
-    "crumbs": [
-      "Aula 03"
-    ]
-  },
-  {
-    "objectID": "intro.html",
-    "href": "intro.html",
-    "title": "Aula 01",
-    "section": "",
-    "text": "Pré-requisitos:\n\nInstalar o R\nInstalar o RStudio\n\nInstalar os pacotes: - sf - terra - dplyr - data.table - mapview - osmdata - geobr - geocodebr\n\n\nApós instalar, em sequencia, o R e o RStudio, abra o RStudio e observe a sua interface (Figura 01).\n\n\n\nFigura 01: Interface do RStudio\n\n\n\n\nPainel onde você pode editar e salvar scripts em R ou criar documentos computacionais, como Quarto e R Markdown.\n\n\n\nPainel que exibe os objetos temporários em R à medida que são criados durante a sessão do R.\n\n\n\nPainel utilizado para escrever comandos curtos e interativos em R.\n\n\n\nPainel que exibe os gráficos, tabelas ou resultados em HTML gerados pelo código executado, juntamente com os arquivos salvos em disco.\n\n\n\n\nPara instalar pacotes no RStudio, é utilizada a função install.packages() no console do RStudio:\n\n#install.packages()\n\nPara instalar diversos pacotes de uma única vez, digite no console do RStudio a função install.packages () utilizando como argumento os pacotes sf, terra, dplyr, data.table, mapview, osmdata, geobr e geocodebr, que são alguns dos pacotes que serão utilizados ao longo da disciplina:\n\n#install.packages(\"sf\", \"terra\", \"dplyr\", \"data.table\", \"mapview\", \"osmdata\", \"geobr\", \"geocodebr\")\n\nApós instalar os pacotes, carregue-os na sessão atual através da função library():\n\n#library(sf)\n\n\n\n\nhttps://docs.posit.co/ide/user/"
-  },
-  {
-    "objectID": "intro.html#interface-do-rstudio",
-    "href": "intro.html#interface-do-rstudio",
-    "title": "Aula 01",
-    "section": "",
-    "text": "Após instalar, em sequencia, o R e o RStudio, abra o RStudio e observe a sua interface (Figura 01).\n\n\n\nFigura 01: Interface do RStudio\n\n\n\n\nPainel onde você pode editar e salvar scripts em R ou criar documentos computacionais, como Quarto e R Markdown.\n\n\n\nPainel que exibe os objetos temporários em R à medida que são criados durante a sessão do R.\n\n\n\nPainel utilizado para escrever comandos curtos e interativos em R.\n\n\n\nPainel que exibe os gráficos, tabelas ou resultados em HTML gerados pelo código executado, juntamente com os arquivos salvos em disco."
-  },
-  {
-    "objectID": "intro.html#instalação-de-pacotes",
-    "href": "intro.html#instalação-de-pacotes",
-    "title": "Aula 01",
-    "section": "",
-    "text": "Para instalar pacotes no RStudio, é utilizada a função install.packages() no console do RStudio:\n\n#install.packages()\n\nPara instalar diversos pacotes de uma única vez, digite no console do RStudio a função install.packages () utilizando como argumento os pacotes sf, terra, dplyr, data.table, mapview, osmdata, geobr e geocodebr, que são alguns dos pacotes que serão utilizados ao longo da disciplina:\n\n#install.packages(\"sf\", \"terra\", \"dplyr\", \"data.table\", \"mapview\", \"osmdata\", \"geobr\", \"geocodebr\")\n\nApós instalar os pacotes, carregue-os na sessão atual através da função library():\n\n#library(sf)"
-  },
-  {
-    "objectID": "intro.html#referências",
-    "href": "intro.html#referências",
-    "title": "Aula 01",
-    "section": "",
-    "text": "https://docs.posit.co/ide/user/"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Apresentação",
-    "section": "",
-    "text": "Autor: Diego Bogado Tomasiello\nData: 18/09/2026",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#organização-do-material",
-    "href": "index.html#organização-do-material",
-    "title": "Apresentação",
-    "section": "Organização do material",
-    "text": "Organização do material\n\n\n\n\n\n\n\nAula\nDescrição\n\n\n\n\n\nIntrodução\n\nInstalação do R e do RStudio. Apresentação da interface do RStudio, sintaxe da linguagem e instalação de pacotes.\n\n\n\nSistemas de Referência e Projeções Cartográficas\n\nTransformação entre Sistemas de Referência e Projeções Cartográficas.\n\n\n\nDados espaciais: tipos, estruturas, formas de representação e formatos de armazenamento\n\nLeitura de diferentes formatos de arquivo no R\n\n\n\nDados de entrada em SIG: Infraestruturas de Dados Espaciais, Censos, Pesquisas Origem e Destino, VGI, Geocodificação, GNSS etc.\n\nPacotes para leitura de diferentes formatos de dados, tratamento topológico e geocodificação de dados.\n\n\n\nOperações espaciais: buffer, clip, dissolve, intersect, union etc.\n\nPrincipais operações de sobreposição e proximidade\n\n\n\nManipulação de dados raster: álgebra de mapas\n\nLeitura, escrita e operações espaciais (locais, focais, zonais e globais) com dados raster\n\n\n\nModelagem de redes de transportes: redes em SIG e em R (r5r)\n\nPrincípios de modelagem de redes de transporte em SIG e em R usando o pacote r5r\n\n\n\nDesign e produção de mapas\n\nProdução de mapas utilizando o pacote cowplot",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "aula01.html",
-    "href": "aula01.html",
-    "title": "Aula 01",
-    "section": "",
-    "text": "Pré-requisitos:\n\nInstalar o R\nInstalar o RStudio\n\nInstalar os pacotes: - sf - terra - dplyr - data.table - mapview - osmdata - geobr - geocodebr\n\n\nApós instalar, em sequencia, o R e o RStudio, abra o RStudio e observe a sua interface (Figura 01).\n\n\n\nFigura 01 - Interface do RStudio\n\n\n\n\nPainel onde você pode editar e salvar scripts em R ou criar documentos computacionais, como Quarto e R Markdown.\n\n\n\nPainel que exibe os objetos temporários em R à medida que são criados durante a sessão do R.\n\n\n\nPainel utilizado para escrever comandos curtos e interativos em R.\n\n\n\nPainel que exibe os gráficos, tabelas ou resultados em HTML gerados pelo código executado, juntamente com os arquivos salvos em disco.\n\n\n\n\nA seguir são apresentadas as regras básicas da sintaxe da linguagem R\n\n\nA atribuição de um valor a uma variável é feita através dos operadores &lt;- ou =:\n\nx &lt;- 10\nx = 10\n\n\n\n\nO R diferencia atributos e nomes de variáveis em letras maiúsculas e minúsculas:\n\nAltura &lt;- 170\naltura &lt;- 180\n\nprint(Altura)\n\n[1] 170\n\nprint(altura)\n\n[1] 180\n\n\"SP\" == \"sp\"\n\n[1] FALSE\n\n\n\n\n\nOs comentários servem como anotações para organizar o código e torná-lo mais fácil de compreender e replicar. Para inserir um comentário, utilize o operador #. Esse operador pode ser utilizado como cabeçalho para descrever blocos de código, no início de uma linha para evitar que o código seja executado ou ao final de uma linha de código. Para comentar um bloco inteiro de código, selecione as linhas desejadas e pressione Crtl + Shift + C:\n\n# Vamos agora atribuir o valor 170 para a variável Altura\nAltura &lt;- 170\n\naltura &lt;- 180 # Agora atribuímos o valor 180 para a variável altura\n\n# print(altura) # dessa forma evitamos a impressão do valor da variável.\n\n\n\n\n\nPara instalar pacotes no RStudio, é utilizada a função install.packages() no console do RStudio:\n\ninstall.packages()\n\nPara instalar diversos pacotes de uma única vez, digite no console do RStudio a função install.packages () utilizando como argumento os pacotes sf, terra, dplyr, data.table, mapview, osmdata, geobr e geocodebr, que são alguns dos pacotes que serão utilizados ao longo da disciplina:\n\ninstall.packages(c(\"sf\", \"terra\", \"dplyr\", \"data.table\", \"mapview\", \"osmdata\", \"geobr\", \"geocodebr\"))\n\nApós instalar os pacotes, carregue-os na sessão atual através da função library():\n\nlibrary(sf)\n\n\n\n\nhttps://docs.posit.co/ide/user/",
-    "crumbs": [
-      "Aula 01"
-    ]
-  },
-  {
-    "objectID": "aula01.html#interface-do-rstudio",
-    "href": "aula01.html#interface-do-rstudio",
-    "title": "Aula 01",
-    "section": "",
-    "text": "Após instalar, em sequencia, o R e o RStudio, abra o RStudio e observe a sua interface (Figura 01).\n\n\n\nFigura 01 - Interface do RStudio\n\n\n\n\nPainel onde você pode editar e salvar scripts em R ou criar documentos computacionais, como Quarto e R Markdown.\n\n\n\nPainel que exibe os objetos temporários em R à medida que são criados durante a sessão do R.\n\n\n\nPainel utilizado para escrever comandos curtos e interativos em R.\n\n\n\nPainel que exibe os gráficos, tabelas ou resultados em HTML gerados pelo código executado, juntamente com os arquivos salvos em disco.",
-    "crumbs": [
-      "Aula 01"
-    ]
-  },
-  {
-    "objectID": "aula01.html#regras-básicas-da-sintaxe-do-r",
-    "href": "aula01.html#regras-básicas-da-sintaxe-do-r",
-    "title": "Aula 01",
-    "section": "",
-    "text": "A seguir são apresentadas as regras básicas da sintaxe da linguagem R\n\n\nA atribuição de um valor a uma variável é feita através dos operadores &lt;- ou =:\n\nx &lt;- 10\nx = 10\n\n\n\n\nO R diferencia atributos e nomes de variáveis em letras maiúsculas e minúsculas:\n\nAltura &lt;- 170\naltura &lt;- 180\n\nprint(Altura)\n\n[1] 170\n\nprint(altura)\n\n[1] 180\n\n\"SP\" == \"sp\"\n\n[1] FALSE\n\n\n\n\n\nOs comentários servem como anotações para organizar o código e torná-lo mais fácil de compreender e replicar. Para inserir um comentário, utilize o operador #. Esse operador pode ser utilizado como cabeçalho para descrever blocos de código, no início de uma linha para evitar que o código seja executado ou ao final de uma linha de código. Para comentar um bloco inteiro de código, selecione as linhas desejadas e pressione Crtl + Shift + C:\n\n# Vamos agora atribuir o valor 170 para a variável Altura\nAltura &lt;- 170\n\naltura &lt;- 180 # Agora atribuímos o valor 180 para a variável altura\n\n# print(altura) # dessa forma evitamos a impressão do valor da variável.",
-    "crumbs": [
-      "Aula 01"
-    ]
-  },
-  {
-    "objectID": "aula01.html#instalação-de-pacotes",
-    "href": "aula01.html#instalação-de-pacotes",
-    "title": "Aula 01",
-    "section": "",
-    "text": "Para instalar pacotes no RStudio, é utilizada a função install.packages() no console do RStudio:\n\ninstall.packages()\n\nPara instalar diversos pacotes de uma única vez, digite no console do RStudio a função install.packages () utilizando como argumento os pacotes sf, terra, dplyr, data.table, mapview, osmdata, geobr e geocodebr, que são alguns dos pacotes que serão utilizados ao longo da disciplina:\n\ninstall.packages(c(\"sf\", \"terra\", \"dplyr\", \"data.table\", \"mapview\", \"osmdata\", \"geobr\", \"geocodebr\"))\n\nApós instalar os pacotes, carregue-os na sessão atual através da função library():\n\nlibrary(sf)",
-    "crumbs": [
-      "Aula 01"
-    ]
-  },
-  {
-    "objectID": "aula01.html#referências",
-    "href": "aula01.html#referências",
-    "title": "Aula 01",
-    "section": "",
-    "text": "https://docs.posit.co/ide/user/",
-    "crumbs": [
-      "Aula 01"
-    ]
-  },
-  {
-    "objectID": "aula02.html",
-    "href": "aula02.html",
-    "title": "Aula 02",
-    "section": "",
-    "text": "A compatibilização dos sistemas de referencia e das projeções cartográficas é fundamental para garantir a correta integração de diferentes dados geoespaciais. Este laboratório didático tem como objetivo exercitar a identificação de Sistemas de Referência de Coordenadas (CRS), a transformação entre sistemas de referencia e a reprojeções de dados geoespaciais.\n\n\n\n\n\nInspecionar parâmetros dos CRS (Datum, Elipsoide, Unidade e Projeção) via código EPSG\nIdentificar incompatibilidade de CRS entre diferentes fontes de dados vetoriais.\nReprojetar com a função st_transform().\nAtribuir CRS com a função st_set_crs().\n\n\n\n\n\n\n\n# Carregar as bibliotecas fundamentais \nlibrary(sf)\nlibrary(dplyr)\n\n\n\n\nBaixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho utilizando a função setwd(). Leia o arquivo zonas_origem_destino.gpkg através da função read_sf() e inspecione seu CRS por meio da função st_crs():\n\n# Configuração do diretório de trabalho\nsetwd() # Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. \"C:/Users/User/Downloads/PTR5932_Lab2\")\n\n# Leitura da camada vetorial (GeoPackage) \nzonas_sp &lt;- read_sf(\"zonas_origem_destino.gpkg\")  \n\n# Inspeção do CRS da camada \nst_crs(zonas_sp)  \n\n# Extração direta do código EPSG e das unidades de medida planimétricas \nepsg_original &lt;- st_crs(zonas_sp)$epsg \nunidade_medida &lt;- st_crs(zonas_sp)$units_gdal  \ncat(\"Código EPSG detectado:\", epsg_original, \"\\n\") \ncat(\"Unidade de medida das coordenadas:\", unidade_medida, \"\\n\") \n\n\nNota: A camada está em WGS84 Sistema de Coordenadas Geográficas (EPSG: 4326), um dos sistemas de referencia mais utilizados em dados geoespaciais. O WGS84 é o sistema de referência utilizado pelo sistema de posicionamento GPS. Nos sistemas de coordenadas geográficas, as coordenadas são expressas em graus decimais.\n\n\n\n\nCarregue a segunda camada (estacoes_metro.gpkg) e verifique a compatibilidade entre os CRS:\n\nestacoes &lt;- read_sf(\"estacoes_metro.gpkg\")\n\n# Teste lógico de igualdade entre os sistemas de referência \nif (st_crs(zonas_sp) != st_crs(estacoes)) {message(\"As camadas possuem CRS distintos e não devem ser sobrepostas sem reprojeção!\") } \n\n\nNota: A camada está em Córrego Alegre UTM 23S (EPSG: 22523), um sistema de referência geodésico local utilizado históricamente no Brasil e frequentemente encontrado em dados cartográficos mais antigos, especialmente extraídos a partir de cartas topográficas digitalizadas. O Córrego Alegre foi posteriormente substituído pelo SAD69 e, mais recentemente, pelo SIRGAS2000. Como a projeção cartográfica adotada é a Universal Transversa de Mercator (UTM), as coordenadas são expressas em metros.\n\n\n\n\nPara a Região Metropolitana de São Paulo, adotaremos o sistema de referência projetado SIRGAS 2000 / UTM Fuso 23S (EPSG: 31983), que utiliza unidades métricas. Para reprojetar os dados, utilize a função st_transform(), informando como parâmetros a variável de entrada e o código EPSG do sistema de referência, 31983:\n\n# Reprojeção da camada de Zonas de Tráfego para SIRGAS 2000 / UTM Fuso 23S \nzonas_utm &lt;- st_transform(zonas_sp, crs = 31983)  \n\n# Reprojeção da camada de Estações para SIRGAS 2000 / UTM Fuso 23S \nestacoes_utm &lt;- st_transform(estacoes, crs = 31983) \n\n# Confirmação do novo CRS \nst_crs(zonas_utm)$Name # Retorno esperado: \"SIRGAS 2000 / UTM zone 23S\" \n\n# Confirmação do novo CRS \nst_crs(estacoes_utm)$Name # Retorno esperado: \"SIRGAS 2000 / UTM zone 23S\" \n\n\n\n\nCaso a camada de entrada não possua um sistema de referência e projeção, é possível atribuir o CRS adequado à camada, desde que essa informação seja conhecida previamente, utilizando a função st_set_crs():\n\n# Leitura da camada de linhas do Metrô de São Paulo\nlinhas_metro &lt;- read_sf(\"linhas_metro_SIRGAS2000_UTM23S.gpkg\")\n\n# Consulta do CRS da camada\nst_crs(linhas_metro) #Retorno esperado: NA\n\n# Atribuição do sistema de referência e projeção corretos (baseado no nome da camada)\nlinhas_metro &lt;- linhas_metro %&gt;%\n  st_set_crs(31983)\n\n# Consulta do CRS da camada\nst_crs(linhas_metro)$Name #Retorno esperado: SIRGAS 2000 / UTM zone 23S\n\n\n\n\n\n\nhttps://r-spatial.github.io/sf\nhttps://cran.r-project.org/web/packages/sf/index.html\nhttps://r.geocompx.org/reproj-geo-data",
-    "crumbs": [
-      "Aula 02"
-    ]
-  },
-  {
-    "objectID": "aula02.html#sistemas-de-referência-de-coordenadas-crs-transformação-entre-sistemas-de-referencia-e-reprojeções-em-r",
-    "href": "aula02.html#sistemas-de-referência-de-coordenadas-crs-transformação-entre-sistemas-de-referencia-e-reprojeções-em-r",
-    "title": "Aula 02",
-    "section": "",
-    "text": "Inspecionar parâmetros dos CRS (Datum, Elipsoide, Unidade e Projeção) via código EPSG\nIdentificar incompatibilidade de CRS entre diferentes fontes de dados vetoriais.\nReprojetar com a função st_transform().\nAtribuir CRS com a função st_set_crs().\n\n\n\n\n\n\n\n# Carregar as bibliotecas fundamentais \nlibrary(sf)\nlibrary(dplyr)\n\n\n\n\nBaixe os arquivos disponibilizados via Google Classroom e configure o diretório de trabalho utilizando a função setwd(). Leia o arquivo zonas_origem_destino.gpkg através da função read_sf() e inspecione seu CRS por meio da função st_crs():\n\n# Configuração do diretório de trabalho\nsetwd() # Ajustar para a pasta onde estão localizadas as bases de dados. (p.ex. \"C:/Users/User/Downloads/PTR5932_Lab2\")\n\n# Leitura da camada vetorial (GeoPackage) \nzonas_sp &lt;- read_sf(\"zonas_origem_destino.gpkg\")  \n\n# Inspeção do CRS da camada \nst_crs(zonas_sp)  \n\n# Extração direta do código EPSG e das unidades de medida planimétricas \nepsg_original &lt;- st_crs(zonas_sp)$epsg \nunidade_medida &lt;- st_crs(zonas_sp)$units_gdal  \ncat(\"Código EPSG detectado:\", epsg_original, \"\\n\") \ncat(\"Unidade de medida das coordenadas:\", unidade_medida, \"\\n\") \n\n\nNota: A camada está em WGS84 Sistema de Coordenadas Geográficas (EPSG: 4326), um dos sistemas de referencia mais utilizados em dados geoespaciais. O WGS84 é o sistema de referência utilizado pelo sistema de posicionamento GPS. Nos sistemas de coordenadas geográficas, as coordenadas são expressas em graus decimais.\n\n\n\n\nCarregue a segunda camada (estacoes_metro.gpkg) e verifique a compatibilidade entre os CRS:\n\nestacoes &lt;- read_sf(\"estacoes_metro.gpkg\")\n\n# Teste lógico de igualdade entre os sistemas de referência \nif (st_crs(zonas_sp) != st_crs(estacoes)) {message(\"As camadas possuem CRS distintos e não devem ser sobrepostas sem reprojeção!\") } \n\n\nNota: A camada está em Córrego Alegre UTM 23S (EPSG: 22523), um sistema de referência geodésico local utilizado históricamente no Brasil e frequentemente encontrado em dados cartográficos mais antigos, especialmente extraídos a partir de cartas topográficas digitalizadas. O Córrego Alegre foi posteriormente substituído pelo SAD69 e, mais recentemente, pelo SIRGAS2000. Como a projeção cartográfica adotada é a Universal Transversa de Mercator (UTM), as coordenadas são expressas em metros.\n\n\n\n\nPara a Região Metropolitana de São Paulo, adotaremos o sistema de referência projetado SIRGAS 2000 / UTM Fuso 23S (EPSG: 31983), que utiliza unidades métricas. Para reprojetar os dados, utilize a função st_transform(), informando como parâmetros a variável de entrada e o código EPSG do sistema de referência, 31983:\n\n# Reprojeção da camada de Zonas de Tráfego para SIRGAS 2000 / UTM Fuso 23S \nzonas_utm &lt;- st_transform(zonas_sp, crs = 31983)  \n\n# Reprojeção da camada de Estações para SIRGAS 2000 / UTM Fuso 23S \nestacoes_utm &lt;- st_transform(estacoes, crs = 31983) \n\n# Confirmação do novo CRS \nst_crs(zonas_utm)$Name # Retorno esperado: \"SIRGAS 2000 / UTM zone 23S\" \n\n# Confirmação do novo CRS \nst_crs(estacoes_utm)$Name # Retorno esperado: \"SIRGAS 2000 / UTM zone 23S\" \n\n\n\n\nCaso a camada de entrada não possua um sistema de referência e projeção, é possível atribuir o CRS adequado à camada, desde que essa informação seja conhecida previamente, utilizando a função st_set_crs():\n\n# Leitura da camada de linhas do Metrô de São Paulo\nlinhas_metro &lt;- read_sf(\"linhas_metro_SIRGAS2000_UTM23S.gpkg\")\n\n# Consulta do CRS da camada\nst_crs(linhas_metro) #Retorno esperado: NA\n\n# Atribuição do sistema de referência e projeção corretos (baseado no nome da camada)\nlinhas_metro &lt;- linhas_metro %&gt;%\n  st_set_crs(31983)\n\n# Consulta do CRS da camada\nst_crs(linhas_metro)$Name #Retorno esperado: SIRGAS 2000 / UTM zone 23S",
-    "crumbs": [
-      "Aula 02"
-    ]
-  },
-  {
-    "objectID": "aula02.html#referências",
-    "href": "aula02.html#referências",
-    "title": "Aula 02",
-    "section": "",
-    "text": "https://r-spatial.github.io/sf\nhttps://cran.r-project.org/web/packages/sf/index.html\nhttps://r.geocompx.org/reproj-geo-data",
-    "crumbs": [
-      "Aula 02"
     ]
   }
 ]
