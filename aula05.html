@@ -200,10 +200,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link active" data-scroll-target="#objetivos-de-aprendizagem"><span class="header-section-number">5.0.1</span> <strong>Objetivos de Aprendizagem</strong></a></li>
-  <li><a href="#preparação-do-ambiente-no-r" id="toc-preparação-do-ambiente-no-r" class="nav-link" data-scroll-target="#preparação-do-ambiente-no-r"><span class="header-section-number">5.0.2</span> <strong>Preparação do Ambiente no R</strong></a></li>
-  <li><a href="#roteiro-de-execução-passo-a-passo" id="toc-roteiro-de-execução-passo-a-passo" class="nav-link" data-scroll-target="#roteiro-de-execução-passo-a-passo"><span class="header-section-number">5.0.3</span> <strong>Roteiro de Execução Passo a Passo</strong></a></li>
-  <li><a href="#referências" id="toc-referências" class="nav-link" data-scroll-target="#referências"><span class="header-section-number">5.1</span> Referências:</a></li>
+  <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link active" data-scroll-target="#objetivos-de-aprendizagem"><span class="header-section-number">5.1</span> <strong>Objetivos de Aprendizagem</strong></a></li>
+  <li><a href="#preparação-do-ambiente-no-r" id="toc-preparação-do-ambiente-no-r" class="nav-link" data-scroll-target="#preparação-do-ambiente-no-r"><span class="header-section-number">5.2</span> <strong>Preparação do Ambiente no R</strong></a></li>
+  <li><a href="#roteiro-de-execução-passo-a-passo" id="toc-roteiro-de-execução-passo-a-passo" class="nav-link" data-scroll-target="#roteiro-de-execução-passo-a-passo"><span class="header-section-number">5.3</span> <strong>Roteiro de Execução Passo a Passo</strong></a>
+  <ul class="collapse">
+  <li><a href="#operação-de-buffer" id="toc-operação-de-buffer" class="nav-link" data-scroll-target="#operação-de-buffer"><span class="header-section-number">5.3.1</span> <strong>Operação de Buffer</strong></a></li>
+  <li><a href="#operação-de-área-de-serviço" id="toc-operação-de-área-de-serviço" class="nav-link" data-scroll-target="#operação-de-área-de-serviço"><span class="header-section-number">5.3.2</span> <strong>Operação de Área de Serviço</strong></a></li>
+  <li><a href="#operações-de-sobreposição" id="toc-operações-de-sobreposição" class="nav-link" data-scroll-target="#operações-de-sobreposição"><span class="header-section-number">5.3.3</span> <strong>Operações de sobreposição</strong></a></li>
+  <li><a href="#spatial-join" id="toc-spatial-join" class="nav-link" data-scroll-target="#spatial-join"><span class="header-section-number">5.3.4</span> <strong>Spatial Join</strong></a></li>
+  </ul></li>
+  <li><a href="#referências" id="toc-referências" class="nav-link" data-scroll-target="#referências"><span class="header-section-number">5.4</span> Referências:</a></li>
   </ul>
 </nav>
     </div>
@@ -230,8 +236,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>As operações espaciais são funções que utilizam a geometria dos dados de entrada para realizar análises e produzir resultados derivados. Serão exploradas operações espaciais de <strong>Buffer</strong>, <strong>Service Area</strong>, <strong>Intersect</strong>, <strong>Clip</strong>, <strong>Merge</strong>, <strong>Union</strong>, <strong>Erase</strong> e <strong>Symmetric Difference</strong>.</p>
-<section id="objetivos-de-aprendizagem" class="level3" data-number="5.0.1">
-<h3 data-number="5.0.1" class="anchored" data-anchor-id="objetivos-de-aprendizagem"><span class="header-section-number">5.0.1</span> <strong>Objetivos de Aprendizagem</strong></h3>
+<section id="objetivos-de-aprendizagem" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="objetivos-de-aprendizagem"><span class="header-section-number">5.1</span> <strong>Objetivos de Aprendizagem</strong></h2>
 <ul>
 <li><p>Aprender a utilizar as ferramentas de:</p>
 <ul>
@@ -247,8 +253,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 </ul>
 </section>
-<section id="preparação-do-ambiente-no-r" class="level3" data-number="5.0.2">
-<h3 data-number="5.0.2" class="anchored" data-anchor-id="preparação-do-ambiente-no-r"><span class="header-section-number">5.0.2</span> <strong>Preparação do Ambiente no R</strong></h3>
+<section id="preparação-do-ambiente-no-r" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="preparação-do-ambiente-no-r"><span class="header-section-number">5.2</span> <strong>Preparação do Ambiente no R</strong></h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregar as bibliotecas fundamentais </span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)          <span class="co"># Manipulação de dados vetoriais (Simple Features)</span></span>
@@ -272,10 +278,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Nota:</strong> O comando <code>selectDirectory()</code> abre uma interface para que o usuário indique o diretório de trabalho.</p>
 </blockquote>
 </section>
-<section id="roteiro-de-execução-passo-a-passo" class="level3" data-number="5.0.3">
-<h3 data-number="5.0.3" class="anchored" data-anchor-id="roteiro-de-execução-passo-a-passo"><span class="header-section-number">5.0.3</span> <strong>Roteiro de Execução Passo a Passo</strong></h3>
-<section id="operação-de-buffer" class="level4" data-number="5.0.3.1">
-<h4 data-number="5.0.3.1" class="anchored" data-anchor-id="operação-de-buffer"><span class="header-section-number">5.0.3.1</span> <strong>Operação de Buffer</strong></h4>
+<section id="roteiro-de-execução-passo-a-passo" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="roteiro-de-execução-passo-a-passo"><span class="header-section-number">5.3</span> <strong>Roteiro de Execução Passo a Passo</strong></h2>
+<section id="operação-de-buffer" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="operação-de-buffer"><span class="header-section-number">5.3.1</span> <strong>Operação de Buffer</strong></h3>
 <p>A operação de <em>buffer</em> é utilizada quando há necessidade de identificar áreas próximas a entes ou feições espaciais. O script abaixo utiliza o pacote <code>sf</code> para executar a operação de <em>buffer</em> em três camadas com geometrias diferentes: ponto, linha e polígono.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Leitura da camada de polígonos (tem que possuir atributos variáveis para buffer e crs métrico)</span></span>
@@ -320,8 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Nota:</strong> a operação de <em>buffer</em> negativo só pode ser executada em camadas com geometria do tipo polígono.</p>
 </blockquote>
 </section>
-<section id="operação-de-área-de-serviço" class="level4" data-number="5.0.3.2">
-<h4 data-number="5.0.3.2" class="anchored" data-anchor-id="operação-de-área-de-serviço"><span class="header-section-number">5.0.3.2</span> <strong>Operação de Área de Serviço</strong></h4>
+<section id="operação-de-área-de-serviço" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="operação-de-área-de-serviço"><span class="header-section-number">5.3.2</span> <strong>Operação de Área de Serviço</strong></h3>
 <p>Na operação de Área de Serviço, em vez de distâncias euclidianas, como na operação de <em>buffer</em>, são consideradas as distâncias ao longo da rede de transporte para a análise de proximidade. A seguir, é apresentado um script para calcular a área de serviço de um ponto específico:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Leitura da camada de pontos</span></span>
@@ -356,8 +362,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="fu">mapview</span>(estacao, <span class="at">col.regions =</span> <span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">mapview</span>(service_area_poly, <span class="at">col.regions =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">mapview</span>(estacao_buffer)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="operações-de-sobreposição" class="level4" data-number="5.0.3.3">
-<h4 data-number="5.0.3.3" class="anchored" data-anchor-id="operações-de-sobreposição"><span class="header-section-number">5.0.3.3</span> <strong>Operações de sobreposição</strong></h4>
+<section id="operações-de-sobreposição" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="operações-de-sobreposição"><span class="header-section-number">5.3.3</span> <strong>Operações de sobreposição</strong></h3>
 <p>As operações de sobreposição estão entre as principais operações executadas no dia-a-dia de usuários de Sistemas de Informação Geográfica (SIG). No script abaixo são executadas as operações de <em>Intersect</em>, <em>Clip</em>, <em>Merge</em>, <em>Union</em>, <em>Erase</em> e <em>Symmetric Difference</em>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Leitura da base de dados de favelas na subprefeitura de Campo limpo</span></span>
@@ -412,8 +418,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="fu">mapview</span>(sf_sym_diff_favelas_estacoes_ptos_onibus)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="spatial-join" class="level4" data-number="5.0.3.4">
-<h4 data-number="5.0.3.4" class="anchored" data-anchor-id="spatial-join"><span class="header-section-number">5.0.3.4</span> <strong>Spatial Join</strong></h4>
+<section id="spatial-join" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="spatial-join"><span class="header-section-number">5.3.4</span> <strong>Spatial Join</strong></h3>
 <p>A operação de <em>Spatial Join</em> une os atributos de um ou mais dados de entrada baseado em um relacionamento espacial, seja ele de proximidade ou de sobreposição. O script abaixo mostra como é executada uma operação de <em>Spatial Join</em> através do R:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Leitura da base de dados de pontos de ônibus na subprefeitura de Campo limpo</span></span>
@@ -453,8 +459,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="referências" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="referências"><span class="header-section-number">5.1</span> Referências:</h2>
+<section id="referências" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="referências"><span class="header-section-number">5.4</span> Referências:</h2>
 <p>https://r-spatial.github.io/sf</p>
 <p><a href="https://cran.r-project.org/web/packages/osmdata/index.html" class="uri">https://cran.r-project.org/web/packages/osmdata/index.html</a></p>
 <p><a href="https://github.com/UrbanAnalyst/dodgr" class="uri">https://github.com/UrbanAnalyst/dodgr</a></p>
