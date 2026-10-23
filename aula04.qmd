@@ -236,7 +236,7 @@ rastreio_espacializado <- rastreio %>%
   st_as_sf(coords = c("V5", "V4"), crs = 4326) 
 
 # Visualização da base de dados
-mapview(rastreio_filtro)
+mapview(rastreio_espacializado)
 
 ```
 

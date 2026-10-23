@@ -1,0 +1,257 @@
+# Aula 05
+
+As operações espaciais são funções que utilizam a geometria dos dados de entrada para realizar análises e produzir resultados derivados. Serão exploradas operações espaciais de **Buffer**, **Service Area**, **Intersect**, **Clip**, **Merge**, **Union**, **Erase** e **Symmetric Difference**.
+
+### **Objetivos de Aprendizagem**
+
+-   Aprender a utilizar as ferramentas de:
+
+    -   Buffer;
+
+    -   Service Area;
+
+    -   Intersect;
+
+    -   Clip;
+
+    -   Merge;
+
+    -   Union;
+
+    -   Erase;
+
+    -   Symmetric Difference; e
+
+    -   Spatial Join
+
+### **Preparação do Ambiente no R**
+
+```{r}
+#| eval: false
+# Carregar as bibliotecas fundamentais 
+library(sf)          # Manipulação de dados vetoriais (Simple Features)
+library(dodgr)       # Geração de rotas em rede
+library(osmdata)     # Consulta a dados VGI (OpenStreetMap via Overpass API)
+library(dplyr)       # Manipulação de dados
+library(mapview)     # Cartografia temática interativa
+library(rstudioapi)  # Apontar o diretório de trabalho
+library(terra)       # Leitura, tratamento e exportação de dados
+
+#Caso não tenha instalado algum dos pacotes anteriores, execute: 
+#install.packages("nome do pacote")
+
+# Configure o diretório de trabalho
+path <- selectDirectory(caption = "Select Working Directory") # rode esta linha para apontar o diretório de trabalho
+
+setwd(path)
+mapviewOptions(basemaps = c("Esri.WorldImagery", "OpenTopoMap", "OpenStreetMap"))
+
+```
+
+> **Nota:** O comando `selectDirectory()` abre uma interface para que o usuário indique o diretório de trabalho.
+
+### **Roteiro de Execução Passo a Passo**
+
+#### **Operação de Buffer**
+
+A operação de *buffer* é utilizada quando há necessidade de identificar áreas próximas a entes ou feições espaciais. O script abaixo utiliza o pacote `sf` para executar a operação de *buffer* em três camadas com geometrias diferentes: ponto, linha e polígono.
+
+```{r}
+#| eval: false  
+
+# Leitura da camada de polígonos (tem que possuir atributos variáveis para buffer e crs métrico)
+Pol <- read_sf("Zonas_2023.shp", options = "ENCODING=LATIN1") %>%
+  st_make_valid() %>%
+  st_transform(31983)
+
+st_crs(Pol)
+
+# Buffer Positivo
+buffer_positivo <- st_buffer(Pol, dist = 1000)
+
+# Buffer Negativo
+buffer_negativo <- st_buffer(Pol, dist = -50)
+
+# Buffer baseado nos Atributos de um Campo
+buffer_por_atributo <- st_buffer(Pol, dist = Pol$NumDistrit * 10)
+
+mapview(Pol) + mapview(buffer_positivo) + mapview(buffer_negativo) + mapview(buffer_por_atributo)
+
+
+# Leitura da camada de pontos (tem que possuir crs métrico)
+pontos <- read_sf("geoportal_estacao_metro_v2.gpkg")
+st_crs(pontos)
+
+# Buffer Positivo
+pontos_buffer_positivo <- st_buffer(pontos, dist = 500)
+
+mapview(pontos_buffer_positivo) + mapview(pontos)
+
+
+# Leitura da camada de linhas (tem que possuir crs métrico)
+linhas <- read_sf("geoportal_linha_metro_v4.gpkg")
+st_crs(linhas)
+
+# Buffer Positivo
+linhas_buffer_positivo <- st_buffer(linhas, dist = 500)
+
+mapview(linhas_buffer_positivo)+ mapview(linhas)
+ 
+```
+
+> **Nota:** a operação de *buffer* negativo só pode ser executada em camadas com geometria do tipo polígono.
+
+#### **Operação de Área de Serviço**
+
+Na operação de Área de Serviço, em vez de distâncias euclidianas, como na operação de *buffer*, são consideradas as distâncias ao longo da rede de transporte para a análise de proximidade. A seguir, é apresentado um script para calcular a área de serviço de um ponto específico:
+
+```{r}
+#| eval: false
+
+# Leitura da camada de pontos
+estacao <- pontos %>%
+  filter(nm_estacao_metro_trem == "FRADIQUE COUTINHO") %>%
+         st_transform(4326)
+
+estacao_buffer <- st_buffer(estacao, dist = 500)
+
+bbox <- st_bbox(estacao_buffer)
+osm_sc <- opq(bbox = bbox, timeout = 60) %>%  
+  add_osm_feature(key = "highway") %>%  
+  osmdata_sc()
+
+# Conversão dos dados OSM para um grafo roterizável
+graph <- weight_streetnet(osm_sc, wt_profile = "foot")
+
+# Cálculo dos pontos alcançáveis dentro de 1.000 metros de distância em rede
+from_vertex <- dodgr_vertices(graph)[which.min(
+  st_distance(estacao, 
+              st_as_sf(dodgr_vertices(graph), 
+                       coords = c("x", "y"), 
+                       crs = 4326))), "id"]
+
+distances <- dodgr_distances(graph, from = from_vertex)
+accessible_nodes <- dodgr_vertices(graph)[which(distances <= 500), ]
+
+# Conversão dos pontos acessíveis em uma Área de Serviço
+service_area_points <- st_as_sf(accessible_nodes, coords = c("x", "y"), crs = 4326)
+service_area_poly <- st_convex_hull(st_union(service_area_points))
+
+mapview(estacao, col.regions = "red") + mapview(service_area_poly, col.regions = "white") + mapview(estacao_buffer)
+
+
+```
+
+#### **Operações de sobreposição**
+
+As operações de sobreposição estão entre as principais operações executadas no dia-a-dia de usuários de Sistemas de Informação Geográfica (SIG). No script abaixo são executadas as operações de *Intersect*, *Clip*, *Merge*, *Union*, *Erase* e *Symmetric Difference*:
+
+```{r}
+#| eval: false
+
+# Leitura da base de dados de favelas na subprefeitura de Campo limpo
+favelas <- read_sf("favelas_campo_limpo.gpkg") %>%
+  st_make_valid() %>%
+  vect()
+
+mapview(favelas, col.regions = "red")
+
+# Leitura da base de dados de pontos de ônibus na subprefeitura de Campo limpo
+ptos_onibus <- read_sf("pts_onibus_campo_limpo.gpkg") %>%
+  st_make_valid() %>%
+  vect()
+
+ptos_onibus_buffer <- buffer(ptos_onibus, width = 200)
+mapview(ptos_onibus_buffer)
+
+# Leitura da base de dados de estacoes de metro na subprefeitura de Campo limpo
+estacoes_buffer <- read_sf("estacoes_metro_campo_limpo.gpkg") %>%
+  st_make_valid() %>%
+  vect()
+
+mapview(estacoes_buffer)
+
+# Intersect - Retorna apenas a área e os atributos que pertence a AMBAS as camadas (favelas e buffer dos pontos de ônibus).
+intersect_favelas_ptos_onibus <- terra::intersect(favelas, ptos_onibus_buffer)
+mapview(intersect_favelas_ptos_onibus, col.regions = "green")
+
+
+# Clip - Geometricamente idêntico ao Intersect, mas preserva APENAS os atributos da camada que está sendo recortada (Favelas), usando a outra (Buffer dos pontos de ônibus) apenas como máscara
+favelas <- terra::aggregate(terra::buffer(favelas, width = 0))
+ptos_onibus <- terra::aggregate(terra::buffer(ptos_onibus_buffer, width = 0))
+
+clip_favelas_ptos_onibus <- terra::crop(favelas, ptos_onibus)
+mapview(clip_favelas_ptos_onibus, col.regions = "green")
+
+
+# Merge - Junta as tabelas de atributos e geometrias em um único arquivo, mantendo os objetos como feições separadas (não une as áreas sobrepostas).
+merge_estacoes_metro_ptos_onibus <- terra::union(estacoes_buffer, ptos_onibus_buffer)
+mapview(merge_estacoes_metro_ptos_onibus)
+
+# Union - Combina a geometria de ambos os objetos em uma única feição geográfica. A borda que os dividia na área de sobreposição desaparece (dissolve).
+union_estacoes_metro_ptos_onibus <- terra::aggregate(terra::union(estacoes_buffer, ptos_onibus_buffer))
+mapview(union_estacoes_metro_ptos_onibus)
+
+# Erase - Remove da camada de Favelas qualquer área que seja sobreposta pela camada de estacoes e pontos de ônibus
+erase_favelas_estacoes_ptos_onibus <- terra::erase(favelas, union_estacoes_metro_ptos_onibus)
+mapview(erase_favelas_estacoes_ptos_onibus, col.regions = "red") + mapview(union_estacoes_metro_ptos_onibus, col.regions = "green")
+
+# Symmetric Difference - Retorna as áreas de Favelas e de estacoes de metro e pontos de onibus que NÃO se sobrepõem. A área comum é deletada.
+sf_sym_diff_favelas_estacoes_ptos_onibus <- terra::symdif(favelas, union_estacoes_metro_ptos_onibus)
+mapview(sf_sym_diff_favelas_estacoes_ptos_onibus)
+```
+
+#### **Spatial Join**
+
+A operação de *Spatial Join* une os atributos de um ou mais dados de entrada baseado em um relacionamento espacial, seja ele de proximidade ou de sobreposição. O script abaixo mostra como é executada uma operação de *Spatial Join* através do R:
+
+```{r}
+#| eval: false
+
+# Leitura da base de dados de pontos de ônibus na subprefeitura de Campo limpo
+ptos_onibus <- read_sf("pts_onibus_campo_limpo.gpkg") %>%
+  st_make_valid() %>%
+  st_transform(4326)
+
+# Leitura das subprefeituras de São Paulo e filtro da subprefeitura de Campo Limpo
+sub_campo_limpo <- read_sf("geoportal_subprefeitura_v2.gpkg") %>%
+  filter(nm_subprefeitura =="CAMPO LIMPO") %>%
+  st_make_valid() %>%
+  st_transform(4326)
+
+# Criação do bounding box e obtenção dos dados do OSM
+bbox <- st_bbox(sub_campo_limpo)
+osm_cl <- opq(bbox = bbox, timeout = 100, memsize = 10000000) %>%  
+  add_osm_feature(key = "highway") %>%  
+  osmdata_sf()
+
+# Seleção apenas das vias do OSM
+osm_vias <- osm_cl$osm_lines
+st_crs(osm_vias)
+
+
+# Defino um raio de tolerância (opcional)
+raio_tolerancia <- 10 # medido na unidade do CRS (metros) 
+
+# Execução do Spatial Join com tolerância
+join_com_tolerancia <- st_join( ptos_onibus, 
+                                osm_vias, 
+                                join = st_is_within_distance, 
+                                dist = raio_tolerancia, 
+                                left = TRUE # Mantém todos os pontos na tabela resultante
+)
+
+mapview(join_com_tolerancia, col.regions = "red") + mapview(osm_vias, color = "yellow")
+
+
+```
+
+## Referências:
+
+https://r-spatial.github.io/sf
+
+<https://cran.r-project.org/web/packages/osmdata/index.html>
+
+<https://github.com/UrbanAnalyst/dodgr>
+
+<https://cran.r-project.org/web/packages/terra/refman/terra.html>
