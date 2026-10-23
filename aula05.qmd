@@ -2,7 +2,7 @@
 
 As operações espaciais são funções que utilizam a geometria dos dados de entrada para realizar análises e produzir resultados derivados. Serão exploradas operações espaciais de **Buffer**, **Service Area**, **Intersect**, **Clip**, **Merge**, **Union**, **Erase** e **Symmetric Difference**.
 
-### **Objetivos de Aprendizagem**
+## **Objetivos de Aprendizagem**
 
 -   Aprender a utilizar as ferramentas de:
 
@@ -24,7 +24,7 @@ As operações espaciais são funções que utilizam a geometria dos dados de en
 
     -   Spatial Join
 
-### **Preparação do Ambiente no R**
+## **Preparação do Ambiente no R**
 
 ```{r}
 #| eval: false
@@ -50,9 +50,9 @@ mapviewOptions(basemaps = c("Esri.WorldImagery", "OpenTopoMap", "OpenStreetMap")
 
 > **Nota:** O comando `selectDirectory()` abre uma interface para que o usuário indique o diretório de trabalho.
 
-### **Roteiro de Execução Passo a Passo**
+## **Roteiro de Execução Passo a Passo**
 
-#### **Operação de Buffer**
+### **Operação de Buffer**
 
 A operação de *buffer* é utilizada quando há necessidade de identificar áreas próximas a entes ou feições espaciais. O script abaixo utiliza o pacote `sf` para executar a operação de *buffer* em três camadas com geometrias diferentes: ponto, linha e polígono.
 
@@ -101,7 +101,7 @@ mapview(linhas_buffer_positivo)+ mapview(linhas)
 
 > **Nota:** a operação de *buffer* negativo só pode ser executada em camadas com geometria do tipo polígono.
 
-#### **Operação de Área de Serviço**
+### **Operação de Área de Serviço**
 
 Na operação de Área de Serviço, em vez de distâncias euclidianas, como na operação de *buffer*, são consideradas as distâncias ao longo da rede de transporte para a análise de proximidade. A seguir, é apresentado um script para calcular a área de serviço de um ponto específico:
 
@@ -142,7 +142,7 @@ mapview(estacao, col.regions = "red") + mapview(service_area_poly, col.regions =
 
 ```
 
-#### **Operações de sobreposição**
+### **Operações de sobreposição**
 
 As operações de sobreposição estão entre as principais operações executadas no dia-a-dia de usuários de Sistemas de Informação Geográfica (SIG). No script abaixo são executadas as operações de *Intersect*, *Clip*, *Merge*, *Union*, *Erase* e *Symmetric Difference*:
 
@@ -201,7 +201,7 @@ sf_sym_diff_favelas_estacoes_ptos_onibus <- terra::symdif(favelas, union_estacoe
 mapview(sf_sym_diff_favelas_estacoes_ptos_onibus)
 ```
 
-#### **Spatial Join**
+### **Spatial Join**
 
 A operação de *Spatial Join* une os atributos de um ou mais dados de entrada baseado em um relacionamento espacial, seja ele de proximidade ou de sobreposição. O script abaixo mostra como é executada uma operação de *Spatial Join* através do R:
 
