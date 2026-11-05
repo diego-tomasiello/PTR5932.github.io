@@ -1,0 +1,282 @@
+# Aula 06
+
+Os dados raster ou matriciais são comumente utilizados no geoprocessamento. Nesta aula serão exploradas operações de **álgebra de mapas** com geração de um modelo digital de superfície normalizado, **estatística zonal**, **extração de valores** de dados raster através de pontos e a **reclassificação de dados raster**.
+
+## **Objetivos de Aprendizagem**
+
+-   Aprender a realizar operações de:
+
+    -   Álgebra de mapas;
+
+    -   Estatística zonal;
+
+    -   Extração de valores de dados raster a partir de pontos; e
+
+    -   Reclassificação de dados raster.
+
+## **Preparação do Ambiente no R**
+
+```{r}
+#| eval: false
+
+#instalação de pacotes específicos para a aula de hoje
+install.packages(c("exactextractr", "elevatr", "stplanr"))
+
+# Carregar as bibliotecas fundamentais 
+library(sf)          # Manipulação de dados vetoriais (Simple Features)
+library(osmdata)     # Consulta a dados VGI (OpenStreetMap via Overpass API)
+library(dplyr)       # Manipulação de dados
+library(mapview)     # Cartografia temática interativa
+library(rstudioapi)  # Apontar o diretório de trabalho
+library(lidR)        # Leitura de dados LiDAR (LAS/LAZ)
+library(terra)       # Leitura, tratamento e exportação de dados raster
+library(rgl)         # Renderização e visualização 3D
+library(exactextractr) # Realizar estatísticas zonais
+library(elevatr)     # Acessar dados de atimetria de diferentes serviços web
+library(stplanr)     # Permite realizar operações espaciais como segmentar vias
+library(geobr)       # Acesso a dados oficiais do governo
+
+# Configure o diretório de trabalho
+path <- selectDirectory(caption = "Select Working Directory") # rode esta linha para apontar o diretório de trabalho
+
+setwd(path)
+mapviewOptions(basemaps = c("Esri.WorldImagery", "OpenTopoMap", "OpenStreetMap"))
+
+```
+
+> **Nota:** O comando `selectDirectory()` abre uma interface para que o usuário indique o diretório de trabalho.
+
+## **Roteiro de Execução Passo a Passo**
+
+### **Álgebra de mapas**
+
+O termo **Álgebra de mapas** é utilizado para descrever operações entre dois ou mais rasters utilizando expressões algébricas simples. No script abaixo, são gerados dois modelos digitais de elevação, sendo um modelo de superfície e outro de terreno e realizada a substração entre eles para gerar um modelo digital de superfície normalizado, ou seja, para representar apenas os elementos acima da superfície. O script utiliza os pacotes `sf` , `lidr` e `terra`.
+
+```{r}
+#| eval: false  
+
+# Ler o arquivo LAZ 
+las <- readLAS("MDS_3313-152_1000.laz") 
+
+# Visualização 3D da Nuvem de Pontos Original 
+plot(las, color = "Z", bg = "black", axis = TRUE) 
+
+# Filtro dos pontos classificados como Terreno (Padrão ASPRS: Classe 2 = Terreno).
+las_terreno <- filter_ground(las) 
+
+# Visualizar apenas a nuvem filtrada do terreno em 3D 
+plot(las_terreno, color = "Z", bg = "white") 
+
+# Geração do Modelo Digital do Terreno (MDT / DTM) 
+mdt <- rasterize_terrain( 
+  las = las_terreno, 
+  res = 0.5, # Resolução espacial da célula (ex: 0,5 metro) 
+  algorithm = tin() # Algoritmo de interpolação por Triangulação Delaunay 
+) 
+
+# Plotagem 2D do MDT gerado (objeto SpatRaster do pacote 'terra') 
+plot(mdt, main = "Modelo Digital do Terreno (MDT) - Resolução: 0,5m", col = terrain.colors(50))
+
+
+# Geração do Modelo Digital de Superficie (MDS / DSM) 
+unique(las@data$Classification)
+
+mds <- lidR::rasterize_terrain( 
+  las = las, 
+  res = 0.5, # Resolução espacial da célula (ex: 0,5 metro) 
+  algorithm = tin(),  # Algoritmo de interpolação por Triangulação Delaunay 
+  use_class = c(1L, 2L, 3L, 4L, 5L, 6L, 8L) # classes identificadas através do comando: unique(las@data$Classification)
+  ) 
+
+plot(mds, main = "Modelo Digital de Superficie (MDS) - Resolução: 0,5m", col = terrain.colors(50))
+
+# Geração do Modelo Digital de Superfície Normalizado (Álgebra de Mapas)
+mdsn <- mds - mdt
+
+plot(mdsn, main = "Modelo Digital de Superficie Normalizado (MDSn - Resolução: 0,5m", col = terrain.colors(50))
+```
+
+### **Estatística Zonal**
+
+Nas operações de estatística zonal, são utilizados dados vetoriais com geometria do tipo área para delimitar zonas sobre as quais são extraídas estatísticas de um arquivo raster. A seguir, apresenta-se um exemplo de extração de estatísticas de declividade para polígonos que representam favelas localizadas na subprefeitura de Freguesia do Ó - Brasilândia, em São Paulo. Para isso, são utilizados os pacotes `elevatr`, para obter o Modelo Digital de Elevação (MDE), e `exactextractr`, para o cálculo das estatísticas zonais:
+
+```{r}
+#| eval: false
+
+# Importar polígonos de favelas para SP (Código IBGE SP: 3550308)
+favelas_sp_utm <- read_favela(year = 2022, simplified = F) %>% 
+  filter(code_muni == 3550308) %>%
+  st_transform(31983)
+
+mapview(favelas_sp_utm, color = "red")
+
+# Baixar os limites das subprefeituras através do WFS do GeoSampa
+url_wfs <- sprintf("http://wfs.geosampa.prefeitura.sp.gov.br/geoserver/geoportal/wfs")
+
+#info_camadas <- st_layers(paste0("WFS:", url_wfs)) # Lista as camadas do serviço WFS do GeoSampa
+
+subprefeituras <- st_read(dsn = paste0(url_wfs, "?service=WFS&version=1.0.0&request=GetFeature&typeName=geoportal:subprefeitura"))
+
+subprefeituras <- st_set_crs(subprefeituras, 31983)
+
+# Filtrar a subprefeitura de Freguesia-Brasilandia
+subprefeitura_brasilandia <- subprefeituras %>%
+  filter(nm_subprefeitura =="FREGUESIA-BRASILANDIA") %>%
+  st_transform(4326)
+
+mapview(subprefeitura_brasilandia)
+
+# Baixar o Modelo Digital de Elevação do SRTM 30m via pacote 'elevatr'
+mds_raw <- get_elev_raster(locations = subprefeitura_brasilandia, z = 11, clip = "bbox", src = "gl1")
+
+# Converter para SpatRaster do pacote 'terra' e reprojetar para SIRGAS2000 projeção UTM 23S
+mds <- rast(mds_raw)
+mds_utm <- project(mds, "EPSG:31983")
+
+# Verificar a resolução espacial (tamanho do pixel) do arquivo raster
+res(mds_utm)
+
+# Visualizar o MDE
+plot(mds_utm, main = "Modelo Digital de Elevação (m)", col = terrain.colors(100))
+
+# Geracao de camada de declividade (em graus) a partir do Modelo Digital de Elevação baixado
+declividade <- terrain(mds_utm, v = "slope", unit = "degree", neighbors = 8)
+plot(declividade, main = "Declividade em Graus (°)", col = terrain.colors(100))
+
+# Operacao de Intersection para extrair apenas as favelas dentro dos limites da subprefeitura de Freguesia do Ó - Brasilândia
+subprefeitura_brasilandia_utm <- subprefeitura_brasilandia %>%
+  st_transform(31983)
+
+favelas_brasilandia_utm <- st_intersection(favelas_sp_utm, subprefeitura_brasilandia_utm)
+
+mapview(subprefeitura_brasilandia_utm, color = "black", col.regions = "transparent") + mapview(favelas_brasilandia_utm, col.regions = "red", color = "red")
+
+
+# Executar Estatística Zonal (Declividade Média, Máxima e Desvio Padrão por polígono de favela)
+favelas_brasilandia_utm$decl_media <- exact_extract(declividade, favelas_brasilandia_utm, 'mean')
+favelas_brasilandia_utm$decl_max   <- exact_extract(declividade, favelas_brasilandia_utm, 'max')
+favelas_brasilandia_utm$decl_stdev <- exact_extract(declividade, favelas_brasilandia_utm, 'stdev')
+
+mapview(subprefeitura_brasilandia_utm, color = "black", col.regions = "transparent") + mapview(favelas_brasilandia_utm, zcol="decl_media", layer.name = "Declividade (º)") 
+
+```
+
+### Extração de valores de dados raster a partir de pontos
+
+A extração de valores de dados raster em localizações pontuais é uma operação comum para profissionais que trabalham com dados geoespaciais. No script a seguir, são calculadas as declividades ao longo de segmentos de vias, utilizando dados da rede viária obtidos do OpenStreetMap e o Modelo Digital de Elevação (MDE) utilizado no script anterior:
+
+```{r}
+#| eval: false
+
+# Importar polígonos de favelas para SP (Código IBGE SP: 3550308)
+favelas_sp <- read_favela(year = 2022, simplified = F) %>% 
+  filter(code_muni == 3550308)
+
+limites_favela <- favelas_sp %>%
+  filter(code_favela == 35503080692)
+
+limites_sf <- st_bbox(limites_favela)
+
+# Consulta à API Overpass para extrair as vias residenciais
+bb <- opq(bbox = limites_sf, timeout = 180, memsize = 268435456) 
+
+vias <- bb %>%
+  add_osm_feature(key = "highway", value = "residential") %>%
+  osmdata_sf()
+
+# Extração das geometrias do tipo linha
+linhas_vias <- vias$osm_lines
+
+# Transformação do referencial dos dados para SIRGAS2000 projeção UTM fuso 23S
+linhas_vias <- linhas_vias %>%
+  st_transform(31983)
+
+# Visualização das vias
+mapview(linhas_vias, color = "red") 
+
+# Segmentando as vias em trechos de 10 m
+segmentos_vias <- line_segment(linhas_vias, segment_length = 30)
+
+# Adicionar identificador sequencial dos segmentos
+segmentos_vias$id_segmento <- 1:nrow(segmentos_vias)
+
+# Extrair os vértices iniciais e finais de cada segmento
+pt_inicio <- st_line_sample(segmentos_vias, sample = 0) %>% st_cast("POINT")
+pt_fim    <- st_line_sample(segmentos_vias, sample = 1) %>% st_cast("POINT")
+
+
+# Amostrar os valores de elevação do MDS para os pontos inicial e final
+segmentos_vias$z_inicio <- terra::extract(mds_utm, vect(pt_inicio))[, 2]
+segmentos_vias$z_fim    <- terra::extract(mds_utm, vect(pt_fim))[, 2]
+
+# Calcular o comprimento real (em metros) e a declividade (%)
+segmentos_vias <- segmentos_vias %>%
+  mutate(comprimento_m = as.numeric(st_length(.)),
+         delta_z = abs(z_fim - z_inicio),
+         declividade_pct = (delta_z / comprimento_m) * 100)
+
+# Visualização dos segmentos com a declividade no mapview
+mapview(segmentos_vias, zcol = "declividade_pct", layer.name = "Declividade (%)")
+```
+
+### **Reclassificação de dados Raster**
+
+A operação de reclassificação de dados raster é utilizada quando se deseja transformar dados contínuos em classes discretas, agrupar valores em intervalos ou substituir valores existentes por novos valores. No exemplo a seguir, o script realiza a reclassificação do raster de declividade, convertendo seus valores contínuos em classes discretas:
+
+```{r}
+#| eval: false
+
+  
+# Mapa de declividade (slope) em percentual a partir do MDE
+declividade_rad <- terrain(mds_utm, v = "slope", unit = "radians")
+
+# Conversão para percentual: Tan(Declividade) * 100
+declividade_perc <- tan(declividade_rad) * 100
+
+# View the percentage slope raster
+plot(declividade_perc, main = "Declividade em Percentual (%)")
+
+# Definir a matriz de reclassificação por intervalos de declividade
+# Relevo: Plano (0-3%), Suave Ondulado (3-8%), Ondulado (8-20%), Forte Ondulado (20-45%), Montanhoso (45-75%) e Escarpado (>75%)
+matriz_reclass <- matrix(c(
+  0,   3, 1,   # Classe 1: Plano
+  3,   8, 2,   # Classe 2: Suave Ondulado
+  8,  20, 3,   # Classe 3: Ondulado
+  20,  45, 4,   # Classe 4: Forte Ondulado
+  45, 75, 5,    # Classe 5: Montanhoso
+  75, Inf, 6    # Classe 6: Escarpado
+), ncol = 3, byrow = TRUE)
+
+# Reclassificar o raster utilizando a função classify()
+declividade_reclass <- classify(declividade_perc, rcl = matriz_reclass, right = FALSE)
+
+# Atribuir rótulos às classes no raster do terra
+levels(declividade_reclass) <- data.frame(
+  id = 1:6,
+  classe = c("Plano (0-3%)", "Suave (3-8%)", "Ondulado (8-20%)", "Forte Ondulado (20-45%)", "Montanhoso (45-75%)", "Escarpado (>75%)")
+)
+
+# Visualizar o resultado da reclassificação
+plot(declividade_reclass, col = c("lightgreen", "yellow", "orange", "red", "purple", "black"), main = "Reclassificação de Declividade")
+
+```
+
+## Referências:
+
+https://r-spatial.github.io/sf
+
+<https://cran.r-project.org/web/packages/osmdata/index.html>
+
+<https://cran.r-project.org/web/packages/terra/refman/terra.html>
+
+<https://cran.r-project.org/web/packages/geobr/vignettes/intro_to_geobr.html>
+
+<https://cran.r-project.org/web/packages/exactextractr/refman/exactextractr.html>
+
+<https://cran.r-project.org/web/packages/elevatr/refman/elevatr.html>
+
+<https://cran.r-project.org/web/packages/stplanr/index.html>
+
+<https://cran.r-project.org/web/packages/lidR/index.html>
+
+<https://cran.r-project.org/web/packages/rgl/index.html>

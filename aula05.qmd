@@ -116,7 +116,7 @@ estacao <- pontos %>%
 estacao_buffer <- st_buffer(estacao, dist = 500)
 
 bbox <- st_bbox(estacao_buffer)
-osm_sc <- opq(bbox = bbox, timeout = 60) %>%  
+osm_sc <- opq(bbox = bbox, timeout = 180, memsize = 268435456)) %>%  
   add_osm_feature(key = "highway") %>%  
   osmdata_sc()
 
