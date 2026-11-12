@@ -366,7 +366,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="fu">mapview</span>(subprefeitura_brasilandia)</span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Baixar o Modelo Digital de Elevação do SRTM 30m via pacote 'elevatr'</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>mds_raw <span class="ot">&lt;-</span> <span class="fu">get_elev_raster</span>(<span class="at">locations =</span> subprefeitura_brasilandia, <span class="at">z =</span> <span class="dv">11</span>, <span class="at">clip =</span> <span class="st">"bbox"</span>, <span class="at">src =</span> <span class="st">"gl1"</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>mds_raw <span class="ot">&lt;-</span> <span class="fu">get_elev_raster</span>(<span class="at">locations =</span> subprefeitura_brasilandia, <span class="at">z =</span> <span class="dv">11</span>, <span class="at">clip =</span> <span class="st">"bbox"</span>)</span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Converter para SpatRaster do pacote 'terra' e reprojetar para SIRGAS2000 projeção UTM 23S</span></span>
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>mds <span class="ot">&lt;-</span> <span class="fu">rast</span>(mds_raw)</span>
