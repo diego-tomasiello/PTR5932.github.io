@@ -1,0 +1,178 @@
+# Aula 07
+
+Este laboratório didático é dedicado ao cálculo de **matrizes de tempo de viagem** e **rotas** através do pacote `r5r`. Para isso, serão necessários dados da rede viária, proveniente do OpenStreetMaps (OSM), e da rede de transporte público, no formato *General Transit Feed Specification* (GTFS), para o município de São Paulo.
+
+## **Objetivos de Aprendizagem**
+
+-   Aprender a realizar operações de:
+
+    -   Cálculo de matrizes de tempo de viagem;
+
+    -   Roteirização.
+
+## **Preparação do Ambiente no R**
+
+Antes de executar o script abaixo, deverá ser instalado o *Java Development Kit (JDK) 21*. Para isso, acesse o site [Adoptium/Eclipse Temurin](https://adoptium.net/pt-BR) e baixe o JDK versão 21. Após instalar o JDK versão 21, prossiga para a instalação do pacote `r5r` e preparação do ambiente no R:
+
+```{r}
+#| eval: false
+
+#instalação de pacotes específicos para a aula de hoje
+install.packages("r5r")
+
+# Carregar as bibliotecas fundamentais 
+library(sf)          # Manipulação de dados vetoriais (Simple Features)
+library(dplyr)       # Manipulação de dados
+library(rstudioapi)  # Apontar o diretório de trabalho
+library(geobr)       # Acesso a dados oficiais do governo
+library(elevatr)     # Acessar dados de atimetria de diferentes serviços web
+library(r5r)         # Geração de matrizes de tempo de viagem e rotas
+library(mapview)     # Visualização de dados vetoriais
+library(terra)       # Leitura, tratamento e exportação de dados raster
+library(ggplot2)     # Visualização de dados
+
+# Aumentar memória alocada para o Java R5 (ex: 8GB RAM para a rede de SP) 
+options(java.parameters = "-Xmx8G")
+
+# Configure o diretório de trabalho
+path <- selectDirectory(caption = "Select Working Directory") # rode esta linha para apontar o diretório de trabalho
+
+setwd(path)
+mapviewOptions(basemaps = c("Esri.WorldImagery", "OpenTopoMap", "OpenStreetMap"))
+
+```
+
+> **Nota:** O comando `selectDirectory()` abre uma interface para que o usuário indique o diretório de trabalho.
+
+## **Roteiro de Execução Passo a Passo**
+
+### **Cálculo de Matrizes de Tempo de Viagem**
+
+Para executar o cálculo de matrizes de tempo de viagem através do pacote `r5r`, é necessário criar uma rede de transportes. Para isso, devem ser baixados os seguintes arquivos:
+
+-   **Rede viária:** arquivo no formato `.pbf`, obtido por meio do OpenStreetMap (obrigatório). Os dados podem ser baixados para recortes espaciais específicos através do site [BBBike.org](https://extract.bbbike.org/);
+
+-   **Rede de transporte público:** o arquivo GTFS no formato `.zip`, caso haja interesse em realizar análises que considerem o transporte público (opcional). Os dados podem ser baixados através do site [Mobility Database](https://mobilitydatabase.org/). Para o município de São Paulo, também podem ser baixados diretamente do site da [SPTrans](https://www.sptrans.com.br/desenvolvedores/);
+
+-   **Modelo Digital de Elevação (MDE):** arquivo em formato `.tif` (opcional). O MDE pode ser baixado para a área de interesse através do pacote `elevatr`, conforme demonstrado na aula anterior. O MDE é utilizado para calcular a declividade das vias, que impacta a impedância dos deslocamentos a pé e de bicicleta.
+
+Após criar a rede de transportes, utiliza-se a função `travel_time_matrix()` do pacote `r5r` para estimar os tempos de viagem entre pontos de origem e destino, considerando o dia e o horário de partida:
+
+```{r}
+#| eval: false  
+
+# Definir o diretório com os dados de entrada de São Paulo 
+# A pasta deve conter: 
+# - 'sao-paulo_brazil.osm.pbf' (Malha viária do OSM) 
+# - 'sptrans_gtfs.zip' (Feeds GTFS) 
+
+# Baixar os limites do município de São Paulo para posteriormente baixar o Modelo Digital de Elevação
+limites_sp <- geobr::read_municipality(year = 2022, code_muni = 3550308, simplified = FALSE) %>%
+  st_transform(4326)
+
+# Visualizar a camada de limites do município de São Paulo
+mapview(limites_sp)
+
+# Baixar o Modelo Digital de Elevação via pacote 'elevatr'
+mds_raw <- get_elev_raster(locations = limites_sp, z = 11, clip = "bbox")  
+
+# Exportar o Modelo Digital de Elevação para um arquivo em formato .tif
+writeRaster(mds_raw, filename = "MDS.tif", overwrite = TRUE)
+
+# Local onde está a rede e o Modelo Digital de Elevação
+path <- sprintf("C:/Users/User/Downloads/PTR5932_Lab7")
+
+# Gerar e inicializar a rede de transportes 
+r5r_network <- build_network(data_path = path, overwrite = TRUE)
+
+# Criar pontos de Origem e Destino (p.ex. centróides das Zonas OD de 2023)
+centroides_zonas_OD_2023 <- read_sf("Zonas_2023.shp", options = "ENCODING=LATIN1") %>%
+  st_make_valid() %>%
+  filter(NumeroMuni == 36) %>%
+  st_transform(4326) %>%
+  st_centroid()
+
+mapview(centroides_zonas_OD_2023, layer.name = "Centróides das Zonas OD 2023")
+
+# Formato exigido pelo r5r: data.frame/sf com colunas 'id', 'lat', 'lon' 
+points <- centroides_zonas_OD_2023 %>%
+  mutate(lon = st_coordinates(centroides_zonas_OD_2023)[,1],
+         lat = st_coordinates(centroides_zonas_OD_2023)[,2],
+         NumeroZona = as.character(NumeroZona)) %>%
+  st_drop_geometry()%>%
+  select(NumeroZona, lat, lon) %>%
+  rename(id = "NumeroZona")
+
+
+# Configuração dos parâmetros de entrada na função de matriz de tempo de viagem
+mode <- c("WALK", "TRANSIT") 
+departure_datetime <- as.POSIXct("11-11-2026 07:00:00", format = "%d-%m-%Y %H:%M:%S")
+
+# Calcular a Matriz de Tempo de Viagem (Travel Time Matrix) 
+# Modo: Transporte Público + Caminhada 
+matriz_tt <- travel_time_matrix(r5r_network = r5r_network, 
+                                origins = points, 
+                                destinations = points, 
+                                mode = c("WALK", "TRANSIT"), # Transporte privado (CAR) # modo bicicleta (BICYCLE)
+                                departure_datetime = departure_datetime, 
+                                max_walk_time = 30, # Tempo máximo de caminhada em minutos 
+                                max_trip_duration = 120, # Duração máxima da viagem em minutos 
+                                verbose = FALSE) 
+View(matriz_tt)
+```
+
+### **Roteirização**
+
+As operações de roteirização são realizadas através da função `detailed_itineraries()`, que retorna uma ou mais rotas entre um ou mais pares de origem e destino. Os arquivos de saída apresentam informações sobre o modo de transporte, o tempo de viagem e a distância percorrida em cada rota calculada:
+
+```{r}
+#| eval: false
+# Caso o arquivo GTFS baixado tenha o arquivo "frequencies.txt", será necessário convertê-lo para utilizar a função detailed_itineraries: 
+# library(gtfstools)
+# gtfs <- gtfstools::read_gtfs("sptrans_gtfs.zip")
+# new_gtfs <- gtfstools::frequencies_to_stop_times(test)
+# gtfstools::write_gtfs(new_gtfs,"sptrans_gtfs2.zip")
+
+#Roteirização Detalhada de um Itinerário Espacial
+itinerario <- detailed_itineraries(r5r_network = r5r_network, 
+                                   origins = points[1,], # Centro (Sé) 
+                                   destinations = points[340,], # Cidade Universitária 
+                                   mode = c("WALK", "TRANSIT"), 
+                                   departure_datetime = departure_datetime) 
+
+# Plotar o itinerário sobre o mapa 
+ggplot() + 
+  geom_sf(data = limites_sp, fill = "gray95", color = "gray80") + 
+  geom_sf(data = itinerario, aes(color = mode), size = 1.2) + 
+  theme_minimal() + 
+  labs(title = "Roteirização: Sé - Cidade Universitária", 
+       color = "Modo") 
+
+# Visualizar iterativamente em uma aplicação de mapas
+mapview(limites_sp, color = "white", col.regions = "transparent") + 
+  mapview(itinerario, zcol="mode", layer.name = "Modo de Transporte") 
+
+# Exportar a rota para um arquivo geopackage
+write_sf(itinerario, "rota.gpkg")
+
+# Finalizar a instância do R5 para liberar memória RAM 
+stop_r5()
+rJava::.jgc(R.gc = TRUE)
+
+```
+
+## Referências:
+
+<https://cran.r-project.org/web/packages/r5r/index.html>
+
+<https://cran.r-project.org/web/packages/sf/index.html>
+
+<https://cran.r-project.org/web/packages/geobr/vignettes/intro_to_geobr.html>
+
+<https://cran.r-project.org/web/packages/elevatr/refman/elevatr.html>
+
+<https://cran.r-project.org/web/packages/terra/index.html>
+
+<https://cran.r-project.org/web/packages/ggplot2/index.html>
+
+<https://cran.r-project.org/web/packages/mapview/index.html>
