@@ -127,7 +127,7 @@ subprefeitura_brasilandia <- subprefeituras %>%
 mapview(subprefeitura_brasilandia)
 
 # Baixar o Modelo Digital de Elevação do SRTM 30m via pacote 'elevatr'
-mds_raw <- get_elev_raster(locations = subprefeitura_brasilandia, z = 11, clip = "bbox", src = "gl1")
+mds_raw <- get_elev_raster(locations = subprefeitura_brasilandia, z = 11, clip = "bbox")
 
 # Converter para SpatRaster do pacote 'terra' e reprojetar para SIRGAS2000 projeção UTM 23S
 mds <- rast(mds_raw)
