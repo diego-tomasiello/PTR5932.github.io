@@ -12,12 +12,16 @@ Este laboratório didático é dedicado ao cálculo de **matrizes de tempo de vi
 
 ## **Preparação do Ambiente no R**
 
-Antes de executar o script abaixo, deverá ser instalado o *Java Development Kit (JDK) 21*. Para isso, acesse o site [Adoptium/Eclipse Temurin](https://adoptium.net/pt-BR) e baixe o JDK versão 21. Após instalar o JDK versão 21, prossiga para a instalação do pacote `r5r` e preparação do ambiente no R:
+Antes de executar o script abaixo, deverá ser instalado o *Java Development Kit (JDK) 21*. Para isso, prossiga para a instalação dos pacotes `JavaEnv` e `r5r` e carregue os demais pacotes necessário no ambiente do R:
 
 ```{r}
 #| eval: false
 
 #instalação de pacotes específicos para a aula de hoje
+install.packages("rJavaEnv")
+rje_consent(provided = TRUE)
+java_quick_install(version = 21)
+
 install.packages("r5r")
 
 # Carregar as bibliotecas fundamentais 
@@ -78,9 +82,6 @@ mds_raw <- get_elev_raster(locations = limites_sp, z = 11, clip = "bbox")
 
 # Exportar o Modelo Digital de Elevação para um arquivo em formato .tif
 writeRaster(mds_raw, filename = "MDS.tif", overwrite = TRUE)
-
-# Local onde está a rede e o Modelo Digital de Elevação
-path <- sprintf("C:/Users/User/Downloads/PTR5932_Lab7")
 
 # Gerar e inicializar a rede de transportes 
 r5r_network <- build_network(data_path = path, overwrite = TRUE)
