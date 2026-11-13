@@ -19,6 +19,8 @@ Antes de executar o script abaixo, deverá ser instalado o *Java Development Kit
 
 #instalação de pacotes específicos para a aula de hoje
 install.packages("rJavaEnv")
+library(rJavaEnv)
+
 rje_consent(provided = TRUE)
 java_quick_install(version = 21)
 
